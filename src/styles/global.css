@@ -1,0 +1,9 @@
+/* Global styles — expanded in later tasks */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
