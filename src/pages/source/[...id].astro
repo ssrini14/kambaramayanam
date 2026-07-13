@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DraftBanner from '../../components/DraftBanner.astro';
+import { CATEGORY_COLLECTION, CATEGORIES, type Category } from '../../lib/categories';
+
+export async function getStaticPaths() {
+  const sourceCollections = [...new Set(Object.values(CATEGORY_COLLECTION))];
+  const verses = await getCollection('verses');
+  const paths: any[] = [];
+  for (const collection of sourceCollections) {
+    const entries = (await getCollection(collection as any)) as any[];
+    const category = (CATEGORIES as readonly string[]).find(
+      (c) => CATEGORY_COLLECTION[c as Category] === collection,
+    ) as Category;
+    for (const e of entries) {
+      const citing = verses.filter((v) =>
+        (v.data.links ?? []).some((l) => l.category === category && l.targetId === e.id),
+      );
+      paths.push({
+        params: { id: e.id },
+        props: {
+          entry: e,
+          citing: citing.map((v) => ({ id: v.id, label: `${v.data.padalam} v.${v.data.verseNumber}` })),
+        },
+      });
+    }
+  }
+  return paths;
+}
+
+const { entry, citing } = Astro.props;
+const d = entry.data as any;
+const { Content } = await entry.render();
+---
+<BaseLayout title={d.citation}>
+  <DraftBanner status={d.status} />
+  <h1>{d.citation}</h1>
+  {d.transliteration && <p class="translit">{d.transliteration}</p>}
+  {d.textExcerpt && <blockquote>{d.textExcerpt}</blockquote>}
+  {d.translation && <p>{d.translation}</p>}
+  <div class="layer"><Content /></div>
+  {d.sourceUrl && <p><a href={d.sourceUrl} rel="noopener" target="_blank">Read the full text at the source ↗</a></p>}
+  <p><small>License / provenance: {d.license}</small></p>
+  {citing.length > 0 && (
+    <section class="layer">
+      <h2>Kamban verses that cite this</h2>
+      <ul>{citing.map((v: any) => (<li><a href={`/verse/${v.id}`}>{v.label}</a></li>))}</ul>
+    </section>
+  )}
+</BaseLayout>

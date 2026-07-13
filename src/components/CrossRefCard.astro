@@ -1,0 +1,13 @@
+---
+import type { ResolvedLink } from '../lib/links';
+interface Props { link: ResolvedLink; }
+const { link } = Astro.props;
+const href = link.found ? `/source/${link.targetId}` : undefined;
+---
+<div class="crossref">
+  <div class="cat">{link.label}</div>
+  <div class="citation">
+    {href ? <a href={href}>{link.citation}</a> : <span>{link.citation}</span>}
+  </div>
+  <div class="reason">{link.reason}</div>
+</div>

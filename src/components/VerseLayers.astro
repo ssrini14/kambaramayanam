@@ -1,0 +1,63 @@
+---
+import type { ResolvedLink } from '../lib/links';
+import CrossRefCard from './CrossRefCard.astro';
+import MediaEmbed from './MediaEmbed.astro';
+import { CATEGORY_LABEL, CATEGORIES } from '../lib/categories';
+interface Props { data: any; resolvedLinks: ResolvedLink[]; }
+const { data, resolvedLinks } = Astro.props;
+const byCategory = CATEGORIES
+  .map((c) => ({ c, label: CATEGORY_LABEL[c], links: resolvedLinks.filter((l) => l.category === c) }))
+  .filter((g) => g.links.length > 0);
+const kc = data.kambanContribution;
+const ins = data.insights;
+---
+<section class="layer">
+  <p class="tamil">{data.tamil}</p>
+  <p class="translit">{data.transliteration}</p>
+  <p class="translation">{data.translationEnglish}</p>
+</section>
+
+{data.wordByWord && (
+  <section class="layer">
+    <h2>Word by word</h2>
+    <dl>{data.wordByWord.map((w: any) => (<><dt>{w.word}</dt><dd>{w.meaning}</dd></>))}</dl>
+  </section>
+)}
+
+{data.literaryAnalysis && (
+  <section class="layer"><h2>Literary analysis</h2><p>{data.literaryAnalysis}</p></section>
+)}
+
+{kc && (kc.expands || kc.changes || kc.poeticDevices) && (
+  <section class="layer">
+    <h2>Kamban's contribution</h2>
+    {kc.expands && <p><strong>Expands:</strong> {kc.expands}</p>}
+    {kc.changes && <p><strong>Changes:</strong> {kc.changes}</p>}
+    {kc.poeticDevices && <p><strong>Poetic devices:</strong> {kc.poeticDevices}</p>}
+  </section>
+)}
+
+{byCategory.length > 0 && (
+  <section class="layer">
+    <h2>Cross-references</h2>
+    {byCategory.map((g) => (
+      <div>{g.links.map((l) => (<CrossRefCard link={l} />))}</div>
+    ))}
+  </section>
+)}
+
+{ins && (ins.theological || ins.literary || ins.philosophical) && (
+  <section class="layer">
+    <h2>Insights</h2>
+    {ins.theological && <p><strong>Theological:</strong> {ins.theological}</p>}
+    {ins.literary && <p><strong>Literary:</strong> {ins.literary}</p>}
+    {ins.philosophical && <p><strong>Philosophical:</strong> {ins.philosophical}</p>}
+  </section>
+)}
+
+{data.media && (
+  <section class="layer">
+    <h2>Recitation & media</h2>
+    {data.media.map((m: any) => (<MediaEmbed type={m.type} url={m.url} label={m.label} />))}
+  </section>
+)}

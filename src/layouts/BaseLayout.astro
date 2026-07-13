@@ -1,0 +1,37 @@
+---
+import '../styles/global.css';
+interface Props { title: string; description?: string; }
+const { title, description = 'A cross-referenced study of Kamba Ramayanam.' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Kamba Ramayanam</title>
+    <meta name="description" content={description} />
+    <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+    <script is:inline src="/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/browse">Browse</a>
+        <a href="/about">About</a>
+      </nav>
+    </header>
+    <main data-pagefind-body>
+      <slot />
+    </main>
+    <footer>
+      <div id="search"></div>
+      <p><small>kambaramayanam.org · content is AI-assisted and human-verified.</small></p>
+    </footer>
+    <script is:inline>
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.PagefindUI) new window.PagefindUI({ element: '#search', showsubResults: true });
+      });
+    </script>
+  </body>
+</html>
