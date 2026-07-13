@@ -67,7 +67,7 @@ const sourceSchema = z.object({
 const sourceCollection = () => defineCollection({ type: 'content', schema: sourceSchema });
 
 const works = defineCollection({
-  type: 'content',
+  type: 'data',
   schema: z.object({
     title: z.string(),
     author: z.string().optional(),

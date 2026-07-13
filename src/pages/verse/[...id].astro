@@ -9,6 +9,8 @@ import { assertLinksResolve } from '../../lib/validate';
 import { CATEGORY_COLLECTION } from '../../lib/categories';
 
 export async function getStaticPaths() {
+  /** Strip .md / .mdx extension from Astro 5 content entry IDs for clean URL params and matching. */
+  const stripExt = (id: string) => id.replace(/\.(md|mdx)$/, '');
   const verses = await getCollection('verses');
 
   // Build-time integrity check: every link target must exist.
@@ -16,17 +18,17 @@ export async function getStaticPaths() {
   async function loadIds(collection: string) {
     if (!cache[collection]) {
       const entries = await getCollection(collection as any);
-      cache[collection] = new Set(entries.map((e: any) => e.id));
+      cache[collection] = new Set(entries.map((e: any) => stripExt(e.id)));
     }
     return cache[collection];
   }
   for (const c of Object.values(CATEGORY_COLLECTION)) await loadIds(c);
   assertLinksResolve(
-    verses.map((v) => ({ id: v.id, data: { links: v.data.links } })),
+    verses.map((v) => ({ id: stripExt(v.id), data: { links: v.data.links } })),
     (collection, id) => cache[collection]?.has(id) ?? false,
   );
 
-  return verses.map((v) => ({ params: { id: v.id }, props: { verse: v } }));
+  return verses.map((v) => ({ params: { id: stripExt(v.id) }, props: { verse: v } }));
 }
 
 const { verse } = Astro.props;

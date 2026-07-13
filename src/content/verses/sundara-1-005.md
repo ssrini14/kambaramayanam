@@ -1,0 +1,9 @@
+---
+kandam: "Sundara Kandam"
+padalam: "Kadal Thாண்டு Padalam (The Ocean-Crossing)"
+verseNumber: 5
+tamil: "(replace with verified Kamban Tamil text — verse 5)"
+transliteration: "(ISO 15919 transliteration — verse 5)"
+translationEnglish: "(verified English translation — verse 5)"
+status: "draft"
+---

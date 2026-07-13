@@ -5,6 +5,8 @@ import DraftBanner from '../../components/DraftBanner.astro';
 import { CATEGORY_COLLECTION, CATEGORIES, type Category } from '../../lib/categories';
 
 export async function getStaticPaths() {
+  /** Strip .md / .mdx extension from Astro 5 content entry IDs for clean URL params and matching. */
+  const stripExt = (id: string) => id.replace(/\.(md|mdx)$/, '');
   const sourceCollections = [...new Set(Object.values(CATEGORY_COLLECTION))];
   const verses = await getCollection('verses');
   const paths: any[] = [];
@@ -14,14 +16,15 @@ export async function getStaticPaths() {
       (c) => CATEGORY_COLLECTION[c as Category] === collection,
     ) as Category;
     for (const e of entries) {
+      const eId = stripExt(e.id);
       const citing = verses.filter((v) =>
-        (v.data.links ?? []).some((l) => l.category === category && l.targetId === e.id),
+        (v.data.links ?? []).some((l) => l.category === category && l.targetId === eId),
       );
       paths.push({
-        params: { id: e.id },
+        params: { id: eId },
         props: {
           entry: e,
-          citing: citing.map((v) => ({ id: v.id, label: `${v.data.padalam} v.${v.data.verseNumber}` })),
+          citing: citing.map((v) => ({ id: stripExt(v.id), label: `${v.data.padalam} v.${v.data.verseNumber}` })),
         },
       });
     }
