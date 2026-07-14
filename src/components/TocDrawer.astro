@@ -54,12 +54,9 @@ const currentVerseId = verseMatch ? decodeURIComponent(verseMatch[1]) : null;
 ---
 
 
-<div id="toc-overlay" hidden></div>
-
-<nav id="toc-drawer" aria-label="Table of contents" aria-hidden="true" data-current={currentVerseId}>
+<nav id="toc-sidebar" aria-label="Table of contents" data-current={currentVerseId}>
   <div class="toc-head">
     <span>Contents</span>
-    <button id="toc-close" aria-label="Close contents">×</button>
   </div>
   <ul class="toc-tree">
     {tree.map((k) => (
@@ -113,33 +110,16 @@ const currentVerseId = verseMatch ? decodeURIComponent(verseMatch[1]) : null;
 
 <script is:inline>
   (function () {
+    const drawer = document.getElementById('toc-sidebar');
+    if (!drawer) return;
+
+    // Mobile toggle (the nav "Contents" button collapses/expands the sidebar).
     const toggle = document.getElementById('toc-toggle');
-    const drawer = document.getElementById('toc-drawer');
-    const overlay = document.getElementById('toc-overlay');
-    const closeBtn = document.getElementById('toc-close');
-    if (!toggle || !drawer || !overlay || !closeBtn) return;
-
-    function openDrawer() {
-      drawer.classList.add('open');
-      overlay.hidden = false;
-      drawer.setAttribute('aria-hidden', 'false');
-      toggle.setAttribute('aria-expanded', 'true');
-      document.body.classList.add('toc-locked');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        drawer.classList.toggle('open');
+      });
     }
-    function closeDrawer() {
-      drawer.classList.remove('open');
-      overlay.hidden = true;
-      drawer.setAttribute('aria-hidden', 'true');
-      toggle.setAttribute('aria-expanded', 'false');
-      document.body.classList.remove('toc-locked');
-    }
-
-    toggle.addEventListener('click', openDrawer);
-    closeBtn.addEventListener('click', closeDrawer);
-    overlay.addEventListener('click', closeDrawer);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
-    });
 
     // Accordion: opening one node closes its siblings at the same level.
     // `panelSelector` is the element to show/hide; it lives as a later sibling

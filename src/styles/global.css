@@ -1,8 +1,20 @@
 :root { --maxw: 44rem; --accent: #7a1f1f; --muted: #666; --bg: #fffaf3; --fg: #1a1a1a; }
 * { box-sizing: border-box; }
 body { margin: 0; font-family: Georgia, 'Noto Serif', serif; color: var(--fg); background: var(--bg); line-height: 1.6; }
-main { max-width: var(--maxw); margin: 0 auto; padding: 1.5rem; }
 a { color: var(--accent); }
+
+/* ---- Two-column layout: fixed left sidebar + centered content ---- */
+.layout { display: flex; align-items: flex-start; }
+#toc-sidebar {
+  flex: 0 0 280px; width: 280px; align-self: stretch;
+  position: sticky; top: 0; max-height: 100vh; overflow-y: auto;
+  background: #fbf3e6; border-right: 1px solid #e5d8c5; padding-bottom: 2rem;
+}
+/* main area takes the rest; content stays centered within it at readable width */
+.layout > main {
+  flex: 1 1 auto; min-width: 0;
+  max-width: var(--maxw); margin: 0 auto; padding: 1.5rem;
+}
 footer { max-width: var(--maxw); margin: 0 auto; padding: 1rem 1.5rem; }
 
 /* ---- Site banner ---- */
@@ -47,36 +59,31 @@ header nav { padding-left: 1.5rem; }
 figure { margin: 1rem 0; } figure img { width: 100%; height: auto; border-radius: 8px; }
 figcaption { color: var(--muted); font-size: .9rem; text-align: center; }
 
-/* ---- TOC drawer ---- */
+/* ---- TOC sidebar ---- */
+/* Contents toggle button: hidden on desktop (sidebar always shown), shown on mobile. */
 .nav-toc-btn {
   background: var(--accent); color: #fff; border: 0; border-radius: 6px;
   padding: .3rem .7rem; font: inherit; font-size: .9rem; cursor: pointer;
-  margin-right: auto; /* pin Contents to the far left; push nav links right */
+  margin-right: auto; display: none;
 }
 .nav-toc-btn:hover { background: #611818; }
-body.toc-locked { overflow: hidden; }
-
-#toc-overlay {
-  position: fixed; inset: 0; z-index: 40;
-  background: rgba(0,0,0,.4);
-}
-
-#toc-drawer {
-  position: fixed; top: 0; left: 0; z-index: 50;
-  width: min(88vw, 340px); height: 100vh; overflow-y: auto;
-  background: #fbf3e6; border-right: 1px solid #e5d8c5;
-  box-shadow: 2px 0 12px rgba(0,0,0,.15);
-  transform: translateX(-100%); transition: transform .22s ease;
-}
-#toc-drawer.open { transform: translateX(0); }
 
 .toc-head {
-  display: flex; align-items: center; justify-content: space-between;
   padding: .7rem .9rem; background: var(--accent); color: #fff;
-  position: sticky; top: 0;
+  position: sticky; top: 0; z-index: 1;
 }
 .toc-head span { font-weight: 700; }
-#toc-close { background: none; border: 0; color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; padding: 0 .25rem; }
+
+/* Mobile: sidebar collapses; ☰ Contents button toggles it open. */
+@media (max-width: 760px) {
+  .nav-toc-btn { display: inline-block; }
+  .layout { display: block; }
+  #toc-sidebar {
+    display: none; width: auto; flex-basis: auto; position: static; max-height: none;
+    border-right: 0; border-bottom: 1px solid #e5d8c5;
+  }
+  #toc-sidebar.open { display: block; }
+}
 
 .toc-tree, .toc-padalams, .toc-verses { list-style: none; margin: 0; padding: 0; }
 .toc-tree { padding: .4rem .3rem 2rem; }

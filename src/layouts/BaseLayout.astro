@@ -17,7 +17,6 @@ const { title, description = 'A cross-referenced study of Kamba Ramayanam.' } = 
     <script is:inline src="/pagefind/pagefind-ui.js"></script>
   </head>
   <body>
-    <TocDrawer />
     <Lightbox />
     <header>
       <div class="site-banner">
@@ -30,7 +29,7 @@ const { title, description = 'A cross-referenced study of Kamba Ramayanam.' } = 
         <div class="banner-perumal banner-perumal-r"><ImageSlot id="banner-perumal-right" label="Perumal" ratio="1/1" /></div>
       </div>
       <nav>
-        <button id="toc-toggle" class="nav-toc-btn" aria-label="Open contents" aria-expanded="false" aria-controls="toc-drawer">☰ Contents</button>
+        <button id="toc-toggle" class="nav-toc-btn" aria-label="Toggle contents">☰ Contents</button>
         <a href="/">Home</a>
         <a href="/browse">Browse</a>
         <a href="/kambar">Kambar</a>
@@ -38,9 +37,12 @@ const { title, description = 'A cross-referenced study of Kamba Ramayanam.' } = 
         <a href="/about">About</a>
       </nav>
     </header>
-    <main data-pagefind-body>
-      <slot />
-    </main>
+    <div class="layout">
+      <TocDrawer />
+      <main data-pagefind-body>
+        <slot />
+      </main>
+    </div>
     <footer>
       <div id="search"></div>
       <p><small>kambaramayanam.org · content is AI-assisted and human-verified.</small></p>
