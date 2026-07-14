@@ -212,3 +212,14 @@ body.lightbox-locked { overflow: hidden; }
 .es-tl { color: var(--muted); font-style: italic; font-size: .85rem; display: block; }
 .es-muted { color: var(--muted); }
 .es-note { color: var(--muted); margin-top: 1.5rem; }
+.es-pending { color: var(--muted); font-style: italic; background: #f7efe0; border: 1px dashed #c9a86a; border-radius: 6px; padding: .6rem .8rem; }
+.es-summary { background: #fbf3e6; border-radius: 8px; padding: .75rem 1rem; }
+
+/* ---- Sarvasvam landing ---- */
+.sv-hero { display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; margin: 1rem 0 2rem; }
+.sv-hero .img-slot.portrait { max-width: 220px; flex: 0 0 auto; }
+.sv-hero-text { flex: 1; min-width: 260px; }
+.sv-toc { list-style: none; padding: 0; }
+.sv-toc li { padding: .5rem .75rem; border: 1px solid #e5d8c5; border-radius: 8px; margin: .4rem 0; }
+.sv-toc .sv-range { color: var(--muted); font-size: .85rem; }
+.sv-part-done a { font-weight: 700; }

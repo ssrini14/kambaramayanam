@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageSlot from '../../components/ImageSlot.astro';
+
+const strip = (id: string) => id.replace(/\.(md|mdx)$/, '');
+const slokas = await getCollection('sarvasvam');
+const have = new Set(slokas.map((s) => s.data.number));
+
+// The 8 parts of Śrīmad Rāmāyaṇa Sarvasvam (Uttamur Swamy's Sankshepa commentary).
+const parts = [
+  { title: 'The Ideal Person', range: 'Ślokas 1–17', from: 1, to: 17 },
+  { title: 'Bāla Kāṇḍa', range: 'Ślokas 18–30', from: 18, to: 30 },
+  { title: 'Ayodhyā Kāṇḍa', range: 'Ślokas 31–42', from: 31, to: 42 },
+  { title: 'Araṇya Kāṇḍa', range: 'Ślokas 43–51', from: 43, to: 51 },
+  { title: 'Kiṣkindhā Kāṇḍa', range: 'Ślokas 52–58', from: 52, to: 58 },
+  { title: 'Sundara Kāṇḍa', range: 'Ślokas 59–68', from: 59, to: 68 },
+  { title: 'Yuddha Kāṇḍa', range: 'Ślokas 69–92', from: 69, to: 92 },
+  { title: 'Rāma Rājya', range: 'Ślokas 93–101', from: 93, to: 101 },
+];
+function firstAvailable(from: number, to: number) {
+  for (let n = from; n <= to; n++) if (have.has(n)) return n;
+  return null;
+}
+---
+<BaseLayout title="Śrīmad Rāmāyaṇa Sarvasvam">
+  <section class="sv-hero">
+    <ImageSlot id="acharya-uttamur" label="Srimad Uttamur Veeraraghavachariar Swamy" ratio="3/4" variant="portrait" />
+    <div class="sv-hero-text">
+      <p class="es-eyebrow">The Ramayana, whole — through the eyes of an acharya</p>
+      <h1>Śrīmad Rāmāyaṇa Sarvasvam</h1>
+      <p>
+        The commentary of <strong>Srimad Uttamur Veeraraghavachariar Swamy</strong>
+        (1897–1983) on the <strong>Saṅkṣepa Rāmāyaṇa</strong> — the hundred-and-one ślokas
+        with which Nārada narrates the entire Ramayana to Vālmīki (Bāla Kāṇḍa, Sarga 1).
+        Read through the Viśiṣṭādvaita darśana, and — the contribution of this project —
+        connected to the corresponding verses of Kamban's Tamil Ramayanam.
+      </p>
+    </div>
+  </section>
+
+  <section class="layer">
+    <h2>The whole epic in a single verse</h2>
+    <p class="block-lede">Before the hundred-and-one, Swamy's own <em>eka-śloki</em> — the entire Ramayana distilled into one verse.</p>
+    <p><a class="btn" href="/eka-sloki">Read the Eka-Śloki Rāmāyaṇam →</a></p>
+  </section>
+
+  <section class="layer">
+    <h2>The commentary — 101 ślokas in eight parts</h2>
+    <p class="block-lede">Swamy's commentary text will be added as the printed edition is obtained and copyright permission granted. Parts with a verse available are linked.</p>
+    <ul class="sv-toc">
+      {parts.map((p) => {
+        const n = firstAvailable(p.from, p.to);
+        return (
+          <li class:list={[n ? 'sv-part-done' : '']}>
+            {n ? <a href={`/sarvasvam/sloka-${String(n).padStart(3, '0')}`}>{p.title}</a> : <span>{p.title}</span>}
+            <span class="sv-range"> · {p.range}</span>
+            {!n && <span class="coming"> — coming soon</span>}
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+
+  <p><a href="/about">About this project &amp; dedication →</a></p>
+</BaseLayout>

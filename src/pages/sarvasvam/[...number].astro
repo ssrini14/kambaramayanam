@@ -1,0 +1,114 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DraftBanner from '../../components/DraftBanner.astro';
+import CrossRefCard from '../../components/CrossRefCard.astro';
+import { resolveLinks, type SourceEntry } from '../../lib/links';
+import { CATEGORY_COLLECTION } from '../../lib/categories';
+
+export async function getStaticPaths() {
+  const strip = (id) => id.replace(/\.(md|mdx)$/, '');
+  const slokas = await getCollection('sarvasvam');
+  return slokas.map((s) => ({ params: { number: strip(s.id) }, props: { sloka: s } }));
+}
+
+const { sloka } = Astro.props;
+const d = sloka.data;
+const { Content } = await sloka.render();
+
+// Resolve scriptural links (incl. Kamba Ramayanam) for cross-ref cards.
+const rawLinks = d.links ?? [];
+const targets = await Promise.all(rawLinks.map(async (l) => {
+  const e = await Promise.resolve(getEntry(CATEGORY_COLLECTION[l.category], l.targetId)).catch(() => undefined);
+  return e ? { id: e.id, data: e.data } : undefined;
+}));
+const resolvedLinks = resolveLinks(rawLinks, (collection, id) => {
+  const idx = rawLinks.findIndex((l) => CATEGORY_COLLECTION[l.category] === collection && l.targetId === id);
+  return idx >= 0 ? (targets[idx] as SourceEntry | undefined) : undefined;
+});
+
+const isPlaceholder = (v) => typeof v === 'string' && v.startsWith('AWAITING THE BOOK');
+
+// The project's unique contribution: the corresponding Kamba Ramayanam verse(s).
+// Resolve to the rich /verse/<id> pages (word-by-word, translation, commentary, refs).
+const strip2 = (id: string) => id.replace(/\.(md|mdx)$/, '');
+const kambanVerses = await Promise.all((d.kambanVerses ?? []).map(async (kv) => {
+  const e = await Promise.resolve(getEntry('verses', kv.verseId)).catch(() => undefined)
+    ?? await Promise.resolve(getEntry('verses', `${kv.verseId}.md`)).catch(() => undefined);
+  return e ? { id: strip2(e.id), label: `${e.data.kandam} — ${e.data.padalam}, verse ${e.data.verseNumber}`, note: kv.note } : null;
+}));
+---
+<BaseLayout title={`Sarvasvam · Śloka ${d.number}`}>
+  <DraftBanner status={d.status} />
+  <p><a href="/sarvasvam">← Śrīmad Rāmāyaṇa Sarvasvam</a></p>
+  <p class="es-eyebrow">{d.part} · Śloka {d.number}</p>
+
+  <section class="es-sloka">
+    <p class="es-line" lang="sa">{d.sanskrit}</p>
+    <p class="translit">{d.transliteration}</p>
+  </section>
+
+  {d.translation && (
+    <section class="layer"><h2>Translation</h2><p>{d.translation}</p></section>
+  )}
+  {d.literalTranslation && (
+    <section class="layer"><h3>Literal</h3><p class="es-muted">{d.literalTranslation}</p></section>
+  )}
+  {d.padaccheda && (
+    <section class="layer"><h2>Padaccheda (word separation)</h2><p lang="sa">{d.padaccheda}</p></section>
+  )}
+  {d.anvaya && (
+    <section class="layer"><h2>Anvaya (prose order)</h2><p lang="sa">{d.anvaya}</p></section>
+  )}
+  {d.grammar && (
+    <section class="layer"><h2>Grammar</h2><p>{d.grammar}</p></section>
+  )}
+
+  <section class="layer">
+    <h2>Commentary — Śrīmad Rāmāyaṇa Sarvasvam</h2>
+    <p class="es-attrib">Srimad Uttamur Veeraraghavachariar Swamy</p>
+    {isPlaceholder(d.commentary)
+      ? <p class="es-pending">📖 Swamy's commentary will appear here once the printed edition is obtained and copyright permission is granted.</p>
+      : <p>{d.commentary}</p>}
+  </section>
+
+  {d.philosophicalNotes && (
+    <section class="layer">
+      <h2>Philosophical notes (Viśiṣṭādvaita)</h2>
+      {isPlaceholder(d.philosophicalNotes)
+        ? <p class="es-pending">📖 Awaiting Swamy's commentary text.</p>
+        : <p>{d.philosophicalNotes}</p>}
+    </section>
+  )}
+
+  {kambanVerses.filter(Boolean).length > 0 && (
+    <section class="layer sv-kamban">
+      <h2>In Kamban's Ramayanam</h2>
+      <p class="block-lede">This project's contribution — the corresponding verse(s) of the Tamil Ramayanam, with full word-by-word meaning, translation, references, and commentary.</p>
+      <ul class="key-list">
+        {kambanVerses.filter(Boolean).map((kv: any) => (
+          <li>
+            <a href={`/verse/${kv.id}`}>{kv.label} →</a>
+            {kv.note && <div class="reason">{kv.note}</div>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {resolvedLinks.length > 0 && (
+    <section class="layer">
+      <h2>Other scriptural connections</h2>
+      {resolvedLinks.map((l) => <CrossRefCard link={l} />)}
+    </section>
+  )}
+
+  {d.literaryNotes && (
+    <section class="layer"><h2>Literary notes</h2><p>{d.literaryNotes}</p></section>
+  )}
+  {d.summary && (
+    <section class="layer es-summary"><h2>In brief</h2><p>{d.summary}</p></section>
+  )}
+
+  <div class="layer"><Content /></div>
+</BaseLayout>

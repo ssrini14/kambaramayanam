@@ -138,8 +138,40 @@ const images = defineCollection({
   }),
 });
 
+// Śrīmad Rāmāyaṇa Sarvasvam — Srimad Uttamur Veeraraghavachariar Swamy's commentary
+// on the Sankshepa Ramayana (the 101 slokas of Valmiki Bala Kanda Sarga 1). Each sloka
+// record carries the 12 study layers. Commentary/philosophical text must come from his
+// book (never reconstructed); the Kamba Ramayanam connection is this project's own
+// contribution. Cross-refs reuse the verse `links` shape.
+const sarvasvam = defineCollection({
+  type: 'content',
+  schema: z.object({
+    number: z.number().int().positive(), // sloka number 1..101
+    part: z.string(),                     // e.g. "The Ideal Person", "Bala Kanda"
+    kandamSlug: z.string().optional(),     // kandam this sloka's episode maps to
+    sanskrit: z.string(),
+    transliteration: z.string(),
+    padaccheda: z.string().optional(),     // word separation
+    anvaya: z.string().optional(),         // prose order
+    grammar: z.string().optional(),        // vibhakti / samasa / dhatu / lakara notes
+    literalTranslation: z.string().optional(),
+    translation: z.string().optional(),    // elegant English
+    commentary: z.string().optional(),     // Uttamur Swamy's commentary (from his book)
+    philosophicalNotes: z.string().optional(), // Vishishtadvaita: tattva / hita / purushartha
+    literaryNotes: z.string().optional(),  // alankara / meter / poetic beauty
+    summary: z.string().optional(),        // modern reader's one-paragraph takeaway
+    // The project's unique contribution: the corresponding Kamba Ramayanam verse(s).
+    // Each id points to a record in `verses`; the page links to the rich /verse/<id> page.
+    kambanVerses: z.array(z.object({ verseId: z.string(), note: z.string().optional() })).optional(),
+    links: z.array(link).optional(),       // other scriptural refs (Valmiki, Desika, Gita, ...)
+    status,
+    sources: z.array(z.string()).optional(),
+  }),
+});
+
 export const collections = {
   verses,
+  sarvasvam,
   valmiki: sourceCollection(),
   desikan: sourceCollection(),
   prabandham: sourceCollection(),
