@@ -24,7 +24,7 @@ const { id, label, ratio = '4/3', variant = '' } = Astro.props;
 let resolved: { src: ImageMetadata; alt: string; full: string } | null = null;
 const img = await Promise.resolve(getEntry('images', id)).catch(() => undefined);
 if (img && img.data.status === 'published') {
-  const mod = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*', { eager: true });
+  const mod = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/**/*', { eager: true });
   const found = mod[`/src/assets/images/${img.data.file}`];
   if (found) {
     // A large optimized WebP for the lightbox + download (clean URL in dev and prod).
