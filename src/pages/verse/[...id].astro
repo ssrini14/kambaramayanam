@@ -1,0 +1,77 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DraftBanner from '../../components/DraftBanner.astro';
+import VerseLayers from '../../components/VerseLayers.astro';
+import SceneImage from '../../components/SceneImage.astro';
+import { resolveLinks, type SourceEntry } from '../../lib/links';
+import { assertLinksResolve, assertImageRefsResolve } from '../../lib/validate';
+import { CATEGORY_COLLECTION } from '../../lib/categories';
+
+export async function getStaticPaths() {
+  /** Strip .md / .mdx extension from Astro 5 content entry IDs for clean URL params and matching. */
+  const stripExt = (id: string) => id.replace(/\.(md|mdx)$/, '');
+  const verses = await getCollection('verses');
+
+  // Build-time integrity check: every link target must exist.
+  const cache: Record<string, Set<string>> = {};
+  async function loadIds(collection: string) {
+    if (!cache[collection]) {
+      const entries = await getCollection(collection as any);
+      cache[collection] = new Set(entries.map((e: any) => stripExt(e.id)));
+    }
+    return cache[collection];
+  }
+  for (const c of Object.values(CATEGORY_COLLECTION)) await loadIds(c);
+  assertLinksResolve(
+    verses.map((v) => ({ id: stripExt(v.id), data: { links: v.data.links } })),
+    (collection, id) => cache[collection]?.has(id) ?? false,
+  );
+
+  // Build-time integrity check: every image reference must resolve to a record + existing file.
+  const imagesEntries = await getCollection('images');
+  const imagesMap = new Map(imagesEntries.map((img) => [img.id, img.data.file as string]));
+  const imageGlob = import.meta.glob<{ default: unknown }>('/src/assets/images/*', { eager: true });
+  assertImageRefsResolve(
+    verses.map((v) => ({ id: stripExt(v.id), data: { image: v.data.image } })),
+    (imageId) => imagesMap.has(imageId),
+    (imageId) => imagesMap.get(imageId),
+    (fileName) => (`/src/assets/images/${fileName}` in imageGlob),
+  );
+
+  return verses.map((v) => ({ params: { id: stripExt(v.id) }, props: { verse: v } }));
+}
+
+const { verse } = Astro.props;
+const { Content } = await verse.render();
+
+async function lookup(collection: string, id: string): Promise<SourceEntry | undefined> {
+  const entry = await getEntry(collection as any, id);
+  return entry ? { id: entry.id, data: entry.data as any } : undefined;
+}
+// Pre-resolve link targets (async lookups gathered up front).
+const rawLinks = verse.data.links ?? [];
+const targets = await Promise.all(rawLinks.map((l) => lookup(CATEGORY_COLLECTION[l.category], l.targetId)));
+const resolvedLinks = resolveLinks(rawLinks, (collection, id) => {
+  const idx = rawLinks.findIndex((l) => CATEGORY_COLLECTION[l.category] === collection && l.targetId === id);
+  return idx >= 0 ? targets[idx] : undefined;
+});
+
+let sceneImage: { src: ImageMetadata; alt: string; caption: string } | null = null;
+if (verse.data.image) {
+  const img = await getEntry('images', verse.data.image);
+  if (img) {
+    const mod = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*', { eager: true });
+    const found = mod[`/src/assets/images/${img.data.file}`];
+    if (found) sceneImage = { src: found.default, alt: img.data.caption, caption: img.data.caption };
+  }
+}
+---
+<BaseLayout title={`${verse.data.kandam} · verse ${verse.data.verseNumber}`}>
+  <DraftBanner status={verse.data.status} />
+  <p><a href="/browse">← Browse</a></p>
+  <h1>{verse.data.padalam} — verse {verse.data.verseNumber}</h1>
+  {sceneImage && <SceneImage src={sceneImage.src} alt={sceneImage.alt} caption={sceneImage.caption} />}
+  <VerseLayers data={verse.data} resolvedLinks={resolvedLinks} />
+  <div class="layer"><Content /></div>
+</BaseLayout>

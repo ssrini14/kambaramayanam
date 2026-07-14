@@ -1,0 +1,7 @@
+---
+interface Props { status: string; }
+const { status } = Astro.props;
+---
+{status !== 'published' && (
+  <div class="draft-banner">⚠️ This entry is a <strong>{status}</strong> — not yet finalized for authority.</div>
+)}

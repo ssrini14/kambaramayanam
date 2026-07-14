@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const verses = await getCollection('verses');
+/** Strip .md / .mdx extension from Astro 5 content entry IDs for clean URL params. */
+const stripExt = (id: string) => id.replace(/\.(md|mdx)$/, '');
+const byKandam = new Map<string, Map<string, typeof verses>>();
+for (const v of verses) {
+  const k = v.data.kandam, p = v.data.padalam;
+  if (!byKandam.has(k)) byKandam.set(k, new Map());
+  const pad = byKandam.get(k)!;
+  if (!pad.has(p)) pad.set(p, [] as any);
+  pad.get(p)!.push(v);
+}
+for (const pad of byKandam.values())
+  for (const list of pad.values()) list.sort((a, b) => a.data.verseNumber - b.data.verseNumber);
+---
+<BaseLayout title="Browse">
+  <h1>Browse verses</h1>
+  {byKandam.size === 0 && <p>No verses yet.</p>}
+  {[...byKandam.entries()].map(([k, pad]) => (
+    <section class="layer">
+      <h2>{k}</h2>
+      {[...pad.entries()].map(([p, list]) => (
+        <div>
+          <h3>{p}</h3>
+          <ul>{list.map((v) => (
+            <li><a href={`/verse/${stripExt(v.id)}`}>Verse {v.data.verseNumber}</a>
+              {v.data.status !== 'published' && <em> ({v.data.status})</em>}</li>
+          ))}</ul>
+        </div>
+      ))}
+    </section>
+  ))}
+</BaseLayout>

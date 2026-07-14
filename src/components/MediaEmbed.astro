@@ -1,0 +1,18 @@
+---
+interface Props { type: 'youtube' | 'spotify' | 'audio'; url: string; label: string; }
+const { type, url, label } = Astro.props;
+function ytId(u: string) { const m = u.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/); return m?.[1]; }
+---
+<figure>
+  {type === 'youtube' && ytId(url) && (
+    <iframe width="100%" height="315" loading="lazy" title={label}
+      src={`https://www.youtube-nocookie.com/embed/${ytId(url)}`}
+      frameborder="0" allowfullscreen></iframe>
+  )}
+  {type === 'spotify' && (
+    <iframe style="border-radius:12px" src={url.replace('open.spotify.com/', 'open.spotify.com/embed/')}
+      width="100%" height="152" loading="lazy" frameborder="0" title={label}></iframe>
+  )}
+  {type === 'audio' && (<audio controls preload="none" src={url}></audio>)}
+  <figcaption>{label}</figcaption>
+</figure>
