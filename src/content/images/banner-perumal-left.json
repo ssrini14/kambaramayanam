@@ -1,15 +1,9 @@
 {
-  "caption": "Sri Vaduvur Kothandaramar (utsavar)",
-  "scene": "Banner medallion (left) — the utsavar (processional deity) of Sri Kothandaramar of Vaduvur, Rama with his bow.",
-  "tool": "Photograph (Creative Commons)",
-  "prompt": "n/a — real photograph",
-  "license": "Creative Commons — see attribution",
-  "attribution": {
-    "author": "PENDING — photographer name from the Wikimedia file page",
-    "sourceUrl": "https://commons.wikimedia.org/",
-    "licenseName": "PENDING — e.g. CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/"
-  },
-  "status": "draft",
+  "caption": "Sri Kodandarama",
+  "scene": "Banner medallion (left) — Kodandarama, Rama standing with his bow, the hero of the Ramayanam.",
+  "tool": "ChatGPT (DALL·E 3)",
+  "prompt": "Devotional icon of Sri Kodandarama — Lord Rama standing serenely holding his great bow (kodanda), blue-hued, crowned, garlanded, with a golden halo, classical South Indian temple style, gold and jewel tones, centered frontal composition suitable for a small round emblem, plain or gold background, no text.",
+  "license": "Generated with ChatGPT (DALL·E 3); used per OpenAI content/usage terms.",
+  "status": "published",
   "file": "banner/perumal-left.png"
 }

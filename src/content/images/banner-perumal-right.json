@@ -1,15 +1,15 @@
 {
-  "caption": "Sri Ranganatha of Srirangam (utsavar / Namperumal)",
-  "scene": "Banner medallion (right) — the utsavar (Namperumal) of Sri Ranganatha, Srirangam.",
+  "caption": "Sri Ranganatha of Srirangam",
+  "scene": "Banner medallion (right) — Sri Ranganathaswamy, Srirangam.",
   "tool": "Photograph (Creative Commons)",
   "prompt": "n/a — real photograph",
-  "license": "Creative Commons — see attribution",
+  "license": "CC BY-SA 4.0",
   "attribution": {
-    "author": "PENDING — photographer name from the Wikimedia file page",
-    "sourceUrl": "https://commons.wikimedia.org/",
-    "licenseName": "PENDING — e.g. CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/"
+    "author": "Achukombra",
+    "sourceUrl": "https://commons.wikimedia.org/w/index.php?curid=128187578",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
   },
-  "status": "draft",
-  "file": "banner/perumal-right.png"
+  "status": "published",
+  "file": "banner/perumal-right.jpg"
 }
