@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import TocDrawer from '../components/TocDrawer.astro';
+import Lightbox from '../components/Lightbox.astro';
 interface Props { title: string; description?: string; }
 const { title, description = 'A cross-referenced study of Kamba Ramayanam.' } = Astro.props;
 ---
@@ -16,6 +17,7 @@ const { title, description = 'A cross-referenced study of Kamba Ramayanam.' } = 
   </head>
   <body>
     <TocDrawer />
+    <Lightbox />
     <header>
       <nav>
         <a href="/">Home</a>
