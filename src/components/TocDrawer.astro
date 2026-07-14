@@ -113,11 +113,18 @@ const currentVerseId = verseMatch ? decodeURIComponent(verseMatch[1]) : null;
     const drawer = document.getElementById('toc-sidebar');
     if (!drawer) return;
 
-    // Mobile toggle (the nav "Contents" button collapses/expands the sidebar).
+    // "Contents" button: on desktop it collapses the sidebar (full-width reading);
+    // on mobile it shows/hides the collapsed sidebar.
     const toggle = document.getElementById('toc-toggle');
-    if (toggle) {
+    const layout = document.querySelector('.layout');
+    if (toggle && layout) {
       toggle.addEventListener('click', () => {
-        drawer.classList.toggle('open');
+        const mobile = window.matchMedia('(max-width: 760px)').matches;
+        if (mobile) {
+          drawer.classList.toggle('open');
+        } else {
+          layout.classList.toggle('collapsed');
+        }
       });
     }
 

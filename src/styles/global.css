@@ -64,9 +64,13 @@ figcaption { color: var(--muted); font-size: .9rem; text-align: center; }
 .nav-toc-btn {
   background: var(--accent); color: #fff; border: 0; border-radius: 6px;
   padding: .3rem .7rem; font: inherit; font-size: .9rem; cursor: pointer;
-  margin-right: auto; display: none;
+  margin-right: auto; display: inline-block;
 }
 .nav-toc-btn:hover { background: #611818; }
+
+/* Desktop collapse: hide the sidebar and let content use full width. */
+.layout.collapsed > #toc-sidebar { display: none; }
+.layout.collapsed > main { max-width: none; }
 
 .toc-head {
   padding: .7rem .9rem; background: var(--accent); color: #fff;
