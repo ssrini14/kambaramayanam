@@ -195,3 +195,20 @@ body.lightbox-locked { overflow: hidden; }
   position: fixed; top: 1rem; right: 1.25rem; z-index: 101;
   background: none; border: 0; color: #fff; font-size: 2.5rem; line-height: 1; cursor: pointer;
 }
+
+/* ---- Eka-Sloki page ---- */
+.es-eyebrow { color: var(--muted); font-style: italic; margin-bottom: 0; }
+.es-attrib { color: var(--accent); margin-top: 0; }
+.es-sloka {
+  background: #fbf3e6; border: 1px solid #e5d8c5; border-left: 4px solid var(--accent);
+  border-radius: 8px; padding: 1.25rem 1.5rem; margin: 1.5rem 0; text-align: center;
+}
+.es-line { font-size: 1.35rem; line-height: 2; margin: .2rem 0; color: #1a1a1a; }
+.es-trans { margin: .4rem 0; }
+.es-map { width: 100%; border-collapse: collapse; }
+.es-map th, .es-map td { text-align: left; padding: .45rem .5rem; border-bottom: 1px solid #eee2cf; vertical-align: top; }
+.es-map th { color: var(--accent); }
+.es-ph { font-size: 1.15rem; }
+.es-tl { color: var(--muted); font-style: italic; font-size: .85rem; display: block; }
+.es-muted { color: var(--muted); }
+.es-note { color: var(--muted); margin-top: 1.5rem; }
