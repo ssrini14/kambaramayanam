@@ -3,8 +3,31 @@
 body { margin: 0; font-family: Georgia, 'Noto Serif', serif; color: var(--fg); background: var(--bg); line-height: 1.6; }
 main { max-width: var(--maxw); margin: 0 auto; padding: 1.5rem; }
 a { color: var(--accent); }
-header nav, footer { max-width: var(--maxw); margin: 0 auto; padding: 1rem 1.5rem; }
-header nav a { margin-right: 1rem; }
+footer { max-width: var(--maxw); margin: 0 auto; padding: 1rem 1.5rem; }
+
+/* ---- Site banner ---- */
+.site-banner {
+  background: linear-gradient(180deg, #7a1f1f 0%, #611818 100%);
+  color: #fdf3e0; text-align: center; padding: 1.1rem 1rem 1rem;
+  border-bottom: 3px solid #c9a227;
+}
+.banner-link { display: block; text-decoration: none; color: inherit; }
+.banner-tamil { display: block; font-size: 1.5rem; letter-spacing: .02em; color: #f4d78a; }
+.banner-title { display: block; font-size: 1.85rem; font-weight: 700; letter-spacing: .04em; margin-top: .1rem; }
+.banner-tagline { display: block; font-size: .85rem; font-style: italic; color: #e8cfa8; margin-top: .3rem; }
+@media (max-width: 480px) {
+  .banner-title { font-size: 1.4rem; }
+  .banner-tamil { font-size: 1.2rem; }
+}
+
+/* nav sits below the banner */
+header nav {
+  max-width: var(--maxw); margin: 0 auto; padding: .6rem 1.5rem;
+  display: flex; gap: 1.25rem; flex-wrap: wrap;
+}
+header nav a { margin-right: 0; }
+/* the fixed TOC toggle overlaps the top-left; keep nav clear only on the nav row */
+header nav { padding-left: 1.5rem; }
 .tamil { font-size: 1.4rem; line-height: 1.9; }
 .translit { color: var(--muted); font-style: italic; }
 .layer { margin: 1.5rem 0; }
@@ -86,9 +109,6 @@ a.toc-k-link:hover { background: #f2e6d2; text-decoration: underline; }
 .toc-verse em { color: inherit; opacity: .75; font-size: .82em; }
 
 .toc-empty { padding: .3rem .5rem .3rem 2.2rem; color: var(--muted); font-style: italic; font-size: .85rem; }
-
-/* Keep the fixed toggle from overlapping the top nav link row. */
-header nav { padding-left: 4.5rem; }
 
 /* ---- Image slots & placeholders ---- */
 .img-slot { width: 100%; overflow: hidden; border-radius: 10px; }
