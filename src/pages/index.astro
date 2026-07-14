@@ -15,11 +15,14 @@ const scenes = [
 ];
 
 // The acharya parampara honoured on the landing page (painted portraits).
+// `years`: Ramanuja/Desika are traditional dates — verify before publishing.
+// Uttamur Swamy (1897–1983) confirmed by the maintainer (family lineage).
+// Parakala Swamy (1359–1386) provided by the maintainer.
 const acharyas = [
-  { image: 'acharya-ramanuja', name: 'Sri Ramanuja' },
-  { image: 'acharya-desikan', name: 'Swami Desikan' },
-  { image: 'acharya-parakala', name: 'Brahmatantra Parakala Swamy' },
-  { image: 'acharya-uttamur', name: 'Sri Uttamur Veeraraghavachariar' },
+  { image: 'acharya-ramanuja', name: 'Shri Ramanujacharya (உடையவர்)', years: '1017–1137 CE' },
+  { image: 'acharya-desikan', name: 'Srimad Vedanta Desikan', years: '1268–1369 CE' },
+  { image: 'acharya-parakala', name: 'Shri Bramhatantra Parakala Swamy', years: '1359–1386 CE' },
+  { image: 'acharya-uttamur', name: 'Shri Uttamur Veeraraghavacharya', years: '1897–1983 CE' },
 ];
 ---
 <BaseLayout title="Home">
@@ -62,6 +65,7 @@ const acharyas = [
         <article class="acharya-card">
           <ImageSlot id={a.image} label={a.name} ratio="3/4" variant="portrait" />
           <h3>{a.name}</h3>
+          {a.years && <p class="acharya-years">{a.years}</p>}
         </article>
       ))}
     </div>

@@ -132,6 +132,7 @@ header nav { padding-left: 4.5rem; }
 .acharya-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem; }
 .acharya-card { text-align: center; }
 .acharya-card h3 { font-size: .92rem; margin: .5rem 0 0; }
+.acharya-years { margin: .1rem 0 0; font-size: .8rem; color: var(--muted); font-style: italic; }
 .img-slot.portrait { max-width: 220px; margin: 0 auto; }
 
 /* ---- Kandam summary page ---- */
