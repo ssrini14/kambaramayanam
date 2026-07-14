@@ -46,7 +46,9 @@ header nav {
   display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center;
   border-bottom: 1px solid #e5d8c5;
 }
-header nav a { margin-right: 0; }
+header nav a { margin-right: 0; display: inline-flex; flex-direction: column; align-items: center; line-height: 1.15; text-decoration: none; }
+header nav a .nav-ta { font-size: .72rem; color: var(--muted); }
+header nav a:hover .nav-en { text-decoration: underline; }
 /* the fixed TOC toggle overlaps the top-left; keep nav clear only on the nav row */
 header nav { padding-left: 1.5rem; }
 .tamil { font-size: 1.4rem; line-height: 1.9; }
@@ -78,6 +80,7 @@ figcaption { color: var(--muted); font-size: .9rem; text-align: center; }
   position: sticky; top: 0; z-index: 1;
 }
 .toc-head span { font-weight: 700; }
+.toc-head-ta { font-weight: 400; font-size: .85rem; opacity: .85; }
 
 /* Mobile: sidebar collapses; ☰ Contents button toggles it open. */
 @media (max-width: 760px) {
