@@ -40,13 +40,11 @@ figure { margin: 1rem 0; } figure img { width: 100%; height: auto; border-radius
 figcaption { color: var(--muted); font-size: .9rem; text-align: center; }
 
 /* ---- TOC drawer ---- */
-#toc-toggle {
-  position: fixed; top: .75rem; left: .75rem; z-index: 30;
+.nav-toc-btn {
   background: var(--accent); color: #fff; border: 0; border-radius: 6px;
-  padding: .45rem .7rem; font: inherit; font-size: .9rem; cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+  padding: .3rem .7rem; font: inherit; font-size: .9rem; cursor: pointer;
 }
-#toc-toggle:hover { background: #611818; }
+.nav-toc-btn:hover { background: #611818; }
 body.toc-locked { overflow: hidden; }
 
 #toc-overlay {
