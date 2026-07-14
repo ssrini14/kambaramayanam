@@ -147,3 +147,11 @@ header nav { padding-left: 4.5rem; }
 .key-list { list-style: none; padding: 0; margin: .5rem 0; }
 .key-list li { padding: .5rem .75rem; border: 1px solid #e5d8c5; border-radius: 8px; margin: .5rem 0; }
 .key-list .reason { color: var(--muted); font-size: .9rem; margin-top: .2rem; }
+
+/* ---- Dedication (About page) ---- */
+.dedication {
+  border: 1px solid #e5d8c5; border-left: 4px solid var(--accent);
+  background: #fbf3e6; border-radius: 8px; padding: 1rem 1.25rem; margin: 1rem 0 2rem;
+}
+.dedication h2 { border: 0; margin-top: 0; color: var(--accent); }
+.dedication p { margin: .5rem 0; }
