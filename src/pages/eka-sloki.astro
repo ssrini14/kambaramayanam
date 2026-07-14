@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// The Eka-Sloki Ramayanam — the whole epic in a single sloka — composed by
+// Srimad Uttamur Veeraraghavachariar Swamy. Each phrase maps to a kaandam; the
+// mapping links into the kaandam summary pages, making the verse a map of the epic.
+// NOTE: attribution confirmed by the maintainer (family lineage). Verify text &
+// authorship against a printed/parampara source before removing draft status.
+
+const slokaLines = [
+  'रामो दाशरथिः मुनेरनुचरः सीतापतिः भोगभुक् ।',
+  'त्यक्त्वा राज्यम् अरण्यम् आहितकरो भ्रातृमुनीन् प्रीणयन् ।',
+  'सीतान्वेषणकृत् कवन्धवचनात् सुग्रीवरक्षी विदन् ।',
+  'सीतां संहृत्य लङ्कम् एत्य महितो राज्याभिषिक्तः सुखी ॥',
+];
+
+const translation = [
+  'Rāma, the son of Daśaratha, followed the sage (Viśvāmitra), became the husband of Sītā, and enjoyed royal life.',
+  'Renouncing the kingdom, he went to the forest, protected the sages, and delighted his brothers.',
+  "While searching for Sītā, following Kabandha's advice, he befriended and protected Sugrīva.",
+  'Recovering Sītā, returning from Laṅkā, he was gloriously crowned king and ruled happily.',
+];
+
+// Each compound phrase -> the episode and the kaandam it belongs to.
+// `kandam` is the slug of a /kandam/<slug> page (null where it spans/beyond).
+const phraseMap = [
+  { phrase: 'रामो दाशरथिः', t: 'rāmo dāśarathiḥ', episode: 'Birth of Śrī Rāma', kandam: 'bala-kandam', label: 'Bāla' },
+  { phrase: 'मुनेरनुचरः', t: 'muner anucaraḥ', episode: 'Accompanies Viśvāmitra', kandam: 'bala-kandam', label: 'Bāla' },
+  { phrase: 'सीतापतिः', t: 'sītāpatiḥ', episode: 'Marriage with Sītā', kandam: 'bala-kandam', label: 'Bāla' },
+  { phrase: 'भोगभुक्', t: 'bhogabhuk', episode: 'Life in Ayodhyā', kandam: 'ayodhya-kandam', label: 'Ayodhyā' },
+  { phrase: 'त्यक्त्वा राज्यम्', t: 'tyaktvā rājyam', episode: 'Renounces the kingdom', kandam: 'ayodhya-kandam', label: 'Ayodhyā' },
+  { phrase: 'अरण्यम्', t: 'araṇyam', episode: 'Forest exile', kandam: 'aranya-kandam', label: 'Araṇya' },
+  { phrase: 'आहितकरः', t: 'āhitakaraḥ', episode: 'Protects the sages, destroys the rākṣasas', kandam: 'aranya-kandam', label: 'Araṇya' },
+  { phrase: 'भ्रातृमुनीन् प्रीणयन्', t: 'bhrātṛ-munīn prīṇayan', episode: 'Delights Lakṣmaṇa and the sages', kandam: 'aranya-kandam', label: 'Araṇya' },
+  { phrase: 'कवन्धवचनात्', t: 'kavandha-vacanāt', episode: 'Kabandha directs him to Sugrīva', kandam: 'aranya-kandam', label: 'Araṇya' },
+  { phrase: 'सुग्रीवरक्षी', t: 'sugrīva-rakṣī', episode: 'Protects Sugrīva; slays Vāli', kandam: 'kishkindha-kandam', label: 'Kiṣkindhā' },
+  { phrase: 'सीतान्वेषणकृत्', t: 'sītānveṣaṇa-kṛt', episode: 'The search for Sītā', kandam: 'sundara-kandam', label: 'Sundara' },
+  { phrase: 'विदन्', t: 'vidan', episode: "Learns Sītā's whereabouts (Hanumān's report)", kandam: 'sundara-kandam', label: 'Sundara' },
+  { phrase: 'सीतां संहृत्य', t: 'sītāṃ saṃhṛtya', episode: 'Regains Sītā after the defeat of Rāvaṇa', kandam: 'yuddha-kandam', label: 'Yuddha' },
+  { phrase: 'लङ्काम् एत्य', t: 'laṅkām etya', episode: 'The war at Laṅkā and return', kandam: 'yuddha-kandam', label: 'Yuddha' },
+  { phrase: 'महितः', t: 'mahitaḥ', episode: 'Praised by devas and ṛṣis', kandam: 'yuddha-kandam', label: 'Yuddha' },
+  { phrase: 'राज्याभिषिक्तः', t: 'rājyābhiṣiktaḥ', episode: 'Paṭṭābhiṣeka (coronation)', kandam: 'yuddha-kandam', label: 'Yuddha' },
+  { phrase: 'सुखी', t: 'sukhī', episode: 'Rāma-rājya — reigns in happiness', kandam: null, label: '—' },
+];
+---
+<BaseLayout title="Eka-Śloki Rāmāyaṇam — the whole epic in one verse">
+  <p class="es-eyebrow">The Ramayana in a single verse</p>
+  <h1>Eka-Śloki Rāmāyaṇam</h1>
+  <p class="es-attrib">
+    Composed by <strong>Srimad Uttamur Veeraraghavachariar Swamy</strong> (1897–1983)
+  </p>
+
+  <section class="es-sloka">
+    {slokaLines.map((line) => <p class="es-line" lang="sa">{line}</p>)}
+  </section>
+
+  <section class="layer">
+    <h2>Meaning</h2>
+    {translation.map((t) => <p class="es-trans">{t}</p>)}
+  </section>
+
+  <section class="layer">
+    <h2>The whole epic, phrase by phrase</h2>
+    <p class="block-lede">Each compound compresses a turning point of the Ramayana. Follow any phrase into its kāṇḍa.</p>
+    <table class="es-map">
+      <thead><tr><th>Phrase</th><th>Episode</th><th>Kāṇḍa</th></tr></thead>
+      <tbody>
+        {phraseMap.map((p) => (
+          <tr>
+            <td><span lang="sa" class="es-ph">{p.phrase}</span> <span class="es-tl">{p.t}</span></td>
+            <td>{p.episode}</td>
+            <td>{p.kandam ? <a href={`/kandam/${p.kandam}`}>{p.label}</a> : <span class="es-muted">{p.label}</span>}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  <p class="es-note"><small>Attribution and text per the maintainer's family/parampara; to be confirmed against a printed source before final publication.</small></p>
+  <p><a href="/about">About this project &amp; dedication →</a></p>
+</BaseLayout>

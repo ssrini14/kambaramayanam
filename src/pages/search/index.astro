@@ -1,0 +1,83 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { KAANDAMS } from '../../lib/structure';
+
+const strip = (id: string) => id.replace(/\.(md|mdx)$/, '');
+
+const verses = await getCollection('verses');
+const kandamRecords = await getCollection('kandams');
+const kandamByName = new Map(kandamRecords.map((k) => [k.data.key, k]));
+
+// Group available verses by kandam (fallback when no curated key verses exist).
+const versesByKandam = new Map<string, typeof verses>();
+for (const v of verses) {
+  const k = v.data.kandam;
+  if (!versesByKandam.has(k)) versesByKandam.set(k, [] as any);
+  versesByKandam.get(k)!.push(v);
+}
+
+// For each kandam, resolve its curated keyPasurams (if any) to linkable entries.
+async function keyVersesFor(kandamName: string) {
+  const rec = kandamByName.get(kandamName);
+  const kps = (rec?.data.keyPasurams ?? []) as { verseId: string; note?: string }[];
+  const out = [];
+  for (const kp of kps) {
+    const e = await Promise.resolve(getEntry('verses', kp.verseId)).catch(() => undefined)
+      ?? await Promise.resolve(getEntry('verses', `${kp.verseId}.md`)).catch(() => undefined);
+    if (e) out.push({ id: strip(e.id), label: `${e.data.padalam} — verse ${e.data.verseNumber}`, note: kp.note, status: e.data.status });
+  }
+  return out;
+}
+
+const sections = [];
+for (const k of KAANDAMS) {
+  const key = await keyVersesFor(k.name);
+  const available = (versesByKandam.get(k.name) ?? [])
+    .slice()
+    .sort((a, b) => a.data.verseNumber - b.data.verseNumber)
+    .map((v) => ({ id: strip(v.id), label: `${v.data.padalam} — verse ${v.data.verseNumber}`, status: v.data.status }));
+  sections.push({ name: k.name, tamil: k.tamil, key, available, slug: kandamByName.get(k.name) ? strip(kandamByName.get(k.name)!.id) : null });
+}
+---
+<BaseLayout title="Search">
+  <h1>Search <span class="k-tamil" lang="ta">தேடு</span></h1>
+  <p class="block-lede">Search across Tamil, transliteration, and English — or explore the key verses of each kāṇḍam below.</p>
+
+  <div id="page-search" class="page-search"></div>
+
+  <h2>Key verses by kāṇḍam</h2>
+  {sections.map((s) => (
+    <section class="layer">
+      <h3>
+        {s.slug ? <a href={`/kandam/${s.slug}`}>{s.name}</a> : s.name}
+        <span class="k-tamil" lang="ta"> {s.tamil}</span>
+      </h3>
+      {s.key.length > 0 ? (
+        <ul class="key-list">
+          {s.key.map((v) => (
+            <li>
+              <a href={`/verse/${v.id}`}>{v.label}</a>
+              {v.status !== 'published' && <em> ({v.status})</em>}
+              {v.note && <div class="reason">{v.note}</div>}
+            </li>
+          ))}
+        </ul>
+      ) : s.available.length > 0 ? (
+        <ul class="key-list">
+          {s.available.map((v) => (
+            <li><a href={`/verse/${v.id}`}>{v.label}</a>{v.status !== 'published' && <em> ({v.status})</em>}</li>
+          ))}
+        </ul>
+      ) : (
+        <p class="es-muted"><em>Verses coming soon.</em></p>
+      )}
+    </section>
+  ))}
+</BaseLayout>
+
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.PagefindUI) new window.PagefindUI({ element: '#page-search', showSubResults: true });
+  });
+</script>

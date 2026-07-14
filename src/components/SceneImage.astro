@@ -1,9 +1,19 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 interface Props { src: ImageMetadata; alt: string; caption?: string; }
 const { src, alt, caption } = Astro.props;
+const big = await getImage({ src, width: 1672, format: 'webp' });
 ---
 <figure>
-  <Image src={src} alt={alt} widths={[400, 800, 1200]} sizes="(max-width: 800px) 100vw, 800px" />
+  <button
+    type="button"
+    class="img-zoomable scene-zoom"
+    data-full={big.src}
+    data-caption={caption ?? alt}
+    aria-label={`View "${alt}" larger`}
+  >
+    <Image src={src} alt={alt} widths={[400, 800, 1200, 1672]} sizes="(max-width: 800px) 100vw, 800px" />
+    <span class="img-zoom-hint" aria-hidden="true">⤢</span>
+  </button>
   {caption && <figcaption>{caption}</figcaption>}
 </figure>

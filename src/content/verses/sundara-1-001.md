@@ -1,6 +1,6 @@
 ---
 kandam: "Sundara Kandam"
-padalam: "Kadal Thாண்டு Padalam (The Ocean-Crossing)"
+padalam: "கடல் தாண்டு படலம் (The Ocean-Crossing)"
 verseNumber: 1
 tamil: "நளிர்மதிச் சடையான் ... (replace with verified Kamban Tamil text)"
 transliteration: "naḷir mati... (ISO 15919; replace with verified transliteration)"
