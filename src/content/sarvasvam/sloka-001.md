@@ -13,8 +13,8 @@ philosophicalNotes: "AWAITING THE BOOK — Swamy's Vishishtadvaita notes (tattva
 literaryNotes: "Anuṣṭubh metre. The opening interrogation frames the whole epic; the honorifics heaped on Nārada (vāg-vidāṁ varam, muni-puṅgavam) establish the authority of the answer to come."
 summary: "The Ramayana opens not with narration but with a QUESTION: Vālmīki asks Nārada who, in all the world, is the perfect person. Everything that follows is the answer — and the answer is Rāma."
 kambanVerses:
-  - verseId: "bala-payiram-012"
-    note: "DRAFT — verify. Kamban's Pāyiram likewise opens the epic by pointing to Rama as the one worth singing; both frame the whole Ramayana around the ideal, saving Lord."
+  - verseId: "bala-payiram-011"
+    note: "DRAFT — verify. Kamban names the epic the இராமாவதாரம் (Rāma-avatāra), the descent of the supreme Lord (நாயகன்) — the Vishishtadvaita answer to Valmiki's opening question 'who is the ideal being of all virtues?'"
 links:
   - category: "valmiki"
     targetId: "sankshepa-ramayana-1"
