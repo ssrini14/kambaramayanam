@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import TocDrawer from '../components/TocDrawer.astro';
 import Lightbox from '../components/Lightbox.astro';
+import ImageSlot from '../components/ImageSlot.astro';
 interface Props { title: string; description?: string; }
 const { title, description = 'A cross-referenced study of Kamba Ramayanam.' } = Astro.props;
 ---
@@ -20,11 +21,13 @@ const { title, description = 'A cross-referenced study of Kamba Ramayanam.' } = 
     <Lightbox />
     <header>
       <div class="site-banner">
+        <div class="banner-perumal banner-perumal-l"><ImageSlot id="banner-perumal-left" label="Perumal" ratio="1/1" /></div>
         <a href="/" class="banner-link">
           <span class="banner-tamil" lang="ta">கம்பராமாயணம்</span>
           <span class="banner-title">Kamba Ramayanam</span>
           <span class="banner-tagline">A cross-referenced study through the Vishishtadvaita tradition</span>
         </a>
+        <div class="banner-perumal banner-perumal-r"><ImageSlot id="banner-perumal-right" label="Perumal" ratio="1/1" /></div>
       </div>
       <nav>
         <button id="toc-toggle" class="nav-toc-btn" aria-label="Open contents" aria-expanded="false" aria-controls="toc-drawer">☰ Contents</button>

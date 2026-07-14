@@ -10,7 +10,15 @@ footer { max-width: var(--maxw); margin: 0 auto; padding: 1rem 1.5rem; }
   background: linear-gradient(180deg, #7a1f1f 0%, #611818 100%);
   color: #fdf3e0; text-align: center; padding: 1.1rem 1rem 1rem;
   border-bottom: 3px solid #c9a227;
+  display: flex; align-items: center; justify-content: center; gap: 1.5rem;
 }
+.banner-perumal { flex: 0 0 auto; width: 68px; }
+.banner-perumal .img-slot { width: 68px; height: 68px; border-radius: 50%; border: 2px solid #c9a227; overflow: hidden; }
+.banner-perumal .img-slot img { width: 100%; height: 100%; object-fit: cover; }
+.banner-perumal .img-placeholder { border-style: solid; border-color: #c9a227; background: rgba(255,255,255,.06); }
+.banner-perumal .img-placeholder-mark { font-size: 1rem; color: #f4d78a; }
+.banner-perumal .img-placeholder-label, .banner-perumal .img-placeholder-note { display: none; }
+@media (max-width: 560px) { .banner-perumal { display: none; } }
 .banner-link { display: block; text-decoration: none; color: inherit; }
 .banner-tamil { display: block; font-size: 1.5rem; letter-spacing: .02em; color: #f4d78a; }
 .banner-title { display: block; font-size: 1.85rem; font-weight: 700; letter-spacing: .04em; margin-top: .1rem; }
