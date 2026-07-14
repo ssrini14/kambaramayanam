@@ -5,7 +5,7 @@ import DraftBanner from '../../components/DraftBanner.astro';
 import VerseLayers from '../../components/VerseLayers.astro';
 import SceneImage from '../../components/SceneImage.astro';
 import { resolveLinks, type SourceEntry } from '../../lib/links';
-import { assertLinksResolve } from '../../lib/validate';
+import { assertLinksResolve, assertImageRefsResolve } from '../../lib/validate';
 import { CATEGORY_COLLECTION } from '../../lib/categories';
 
 export async function getStaticPaths() {
@@ -26,6 +26,17 @@ export async function getStaticPaths() {
   assertLinksResolve(
     verses.map((v) => ({ id: stripExt(v.id), data: { links: v.data.links } })),
     (collection, id) => cache[collection]?.has(id) ?? false,
+  );
+
+  // Build-time integrity check: every image reference must resolve to a record + existing file.
+  const imagesEntries = await getCollection('images');
+  const imagesMap = new Map(imagesEntries.map((img) => [img.id, img.data.file as string]));
+  const imageGlob = import.meta.glob<{ default: unknown }>('/src/assets/images/*', { eager: true });
+  assertImageRefsResolve(
+    verses.map((v) => ({ id: stripExt(v.id), data: { image: v.data.image } })),
+    (imageId) => imagesMap.has(imageId),
+    (imageId) => imagesMap.get(imageId),
+    (fileName) => (`/src/assets/images/${fileName}` in imageGlob),
   );
 
   return verses.map((v) => ({ params: { id: stripExt(v.id) }, props: { verse: v } }));

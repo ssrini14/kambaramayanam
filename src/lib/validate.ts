@@ -29,3 +29,66 @@ export function assertLinksResolve(
     throw new Error(`Broken cross-references (build aborted):\n${lines.join('\n')}`);
   }
 }
+
+// ── Finding 1: work reference integrity ──────────────────────────────────────
+
+export type SourceLike = { id: string; data: { work: string } };
+
+export function findBrokenWorkRefs(
+  sources: SourceLike[],
+  workExists: (workId: string) => boolean,
+): { sourceId: string; work: string }[] {
+  return sources
+    .filter((s) => !workExists(s.data.work))
+    .map((s) => ({ sourceId: s.id, work: s.data.work }));
+}
+
+export function assertWorkRefsResolve(
+  sources: SourceLike[],
+  workExists: (workId: string) => boolean,
+): void {
+  const broken = findBrokenWorkRefs(sources, workExists);
+  if (broken.length > 0) {
+    const lines = broken.map((b) => `  - source "${b.sourceId}" -> work:${b.work}`);
+    throw new Error(`Broken work references (build aborted):\n${lines.join('\n')}`);
+  }
+}
+
+// ── Finding 2: image reference + file integrity ───────────────────────────────
+
+export type VerseLikeWithImage = { id: string; data: { image?: string } };
+
+export function findBrokenImageRefs(
+  verses: VerseLikeWithImage[],
+  imageExists: (imageId: string) => boolean,
+  getImageFile: (imageId: string) => string | undefined,
+  fileExists: (fileName: string) => boolean,
+): { verseId: string; kind: 'image' | 'file'; ref: string }[] {
+  const broken: { verseId: string; kind: 'image' | 'file'; ref: string }[] = [];
+  for (const v of verses) {
+    const imageId = v.data.image;
+    if (!imageId) continue;
+    if (!imageExists(imageId)) {
+      broken.push({ verseId: v.id, kind: 'image', ref: imageId });
+    } else {
+      const fileName = getImageFile(imageId);
+      if (fileName && !fileExists(fileName)) {
+        broken.push({ verseId: v.id, kind: 'file', ref: fileName });
+      }
+    }
+  }
+  return broken;
+}
+
+export function assertImageRefsResolve(
+  verses: VerseLikeWithImage[],
+  imageExists: (imageId: string) => boolean,
+  getImageFile: (imageId: string) => string | undefined,
+  fileExists: (fileName: string) => boolean,
+): void {
+  const broken = findBrokenImageRefs(verses, imageExists, getImageFile, fileExists);
+  if (broken.length > 0) {
+    const lines = broken.map((b) => `  - verse "${b.verseId}" -> ${b.kind}:${b.ref}`);
+    throw new Error(`Broken image references (build aborted):\n${lines.join('\n')}`);
+  }
+}
