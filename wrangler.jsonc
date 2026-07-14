@@ -1,0 +1,15 @@
+{
+  // Static-assets-only Workers deployment for the Astro build output.
+  // No Worker script — Cloudflare serves the prebuilt `dist/` directly.
+  // Docs: https://developers.cloudflare.com/workers/static-assets/
+  "name": "kambaramayanam",
+  "compatibility_date": "2025-07-01",
+  "assets": {
+    "directory": "./dist",
+    // Serve /foo/ from /foo/index.html.
+    "html_handling": "auto-trailing-slash",
+    // No custom 404 page yet (no src/pages/404.astro). Add one and switch this
+    // to "404-page" later if desired.
+    "not_found_handling": "none"
+  }
+}
