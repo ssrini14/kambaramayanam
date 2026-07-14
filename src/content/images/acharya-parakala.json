@@ -1,9 +1,9 @@
 {
-  "caption": "Brahmatantra Parakala Swamy",
-  "scene": "Dignified devotional portrait of a Brahmatantra Parakala Swamy (head of the Parakala Matha lineage): sannyasi robes, urdhva pundra tilaka, serene ascetic bearing.",
-  "tool": "PLACEHOLDER — record the actual generator when the real image is added",
-  "prompt": "Traditional devotional portrait painting of a Sri Vaishnava sannyasi acharya of the Parakala Matha (Brahmatantra Parakala Swamy): saffron robes, prominent urdhva pundra Sri Vaishnava tilaka, serene ascetic bearing, soft warm painterly style, respectful realistic likeness, subtle halo, plain reverent background, no text. An original painted portrait honoring traditional depictions — not a copy of any specific artwork or photograph.",
-  "license": "PLACEHOLDER — record tool license permitting public display",
+  "caption": "Shri Bramhatantra Swatantra Abhinava Vageesa Parakala Maha Desikan",
+  "scene": "The current pontiff of the Parakala Matha, the maintainer's own acharyan. A dignified devotional portrait: saffron sannyasi robes, urdhva pundra Sri Vaishnava tilaka, serene ascetic bearing.",
+  "tool": "PLACEHOLDER — the current pontiff's true likeness should come from an authorized photograph/portrait, not an AI guess",
+  "prompt": "Traditional devotional portrait painting, portrait orientation 3:4, of a Sri Vaishnava sannyasi acharya of the Parakala Matha: saffron robes, prominent urdhva pundra Sri Vaishnava tilaka, serene ascetic bearing, soft warm painterly style, respectful realistic likeness, subtle halo, plain reverent background, no text. NOTE: this is the CURRENT living pontiff — an AI image cannot render his true likeness. Prefer an authorized photograph or a commissioned portrait for the real image.",
+  "license": "PLACEHOLDER — obtain permission for the current pontiff's authorized image",
   "status": "draft",
   "file": "acharya-parakala.png"
 }
