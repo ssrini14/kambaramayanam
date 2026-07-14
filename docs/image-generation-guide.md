@@ -36,17 +36,30 @@ Priority order (do these 7 first for a shareable prototype):
 ### 2. Ayodhya Kandam — `ayodhya-kandam-header.png`
 > Traditional Tanjore (Thanjavur) style devotional painting: Bharata holding Lord Rama's golden sandals (paaduka) upon his own bowed head with both hands, surrounded by the people of Ayodhya gazing reverently at him as he sets out for Nandigram; rich jewel-tone colors, gold-leaf gilded ornamentation and halos, ornate arched temple border, serene rounded figures, flat decorative background, classical South Indian temple art, no text.
 
+> ### ⚠️ Iconography rules for exile-period scenes (Aranya, Kishkindha, Sundara, Yuddha)
+> During the 14-year exile, **Rama and Lakshmana are forest ascetics**: jaṭāmukuṭa
+> (piled-up matted hair / dreadlocks), valkala (bark/grass garments), **NO crowns, NO
+> royal silk, NO ornate jewelry**. Rama stays blue-skinned with a halo. Sita in simple
+> forest attire. And when Rama holds his bow, it is the **kodanda — a tall warrior's
+> longbow, as tall as Rama himself, upright with its tip near the ground; large and
+> majestic, not small.** (Bala Kandam and Pattabhishekam are pre-/post-exile — royal
+> Rama is correct there.) These are baked into the prompts below.
+
 ### 3. Aranya Kandam — `aranya-kandam-header.png`
-> Traditional Tanjore (Thanjavur) style devotional painting: the ten-headed Ravana in his aerial chariot abducting Sita, while the great vulture-king Jatayu with vast outstretched wings attacks him mid-sky to save her; Sita reaching out in distress; rich jewel-tone colors, gold-leaf gilded ornamentation and halos, ornate arched temple border, dramatic composition, flat decorative background, classical South Indian temple art, no text.
+> **Note:** at Sita's abduction, Rama and Lakshmana are NOT present (Rama was lured away by
+> Maricha's golden deer, Lakshmana went after him). So this scene shows only Ravana, Sita,
+> and Jatayu — do **not** add Rama/Lakshmana.
+>
+> Traditional Tanjore (Thanjavur) style devotional painting, wide landscape 16:9: the ten-headed twenty-armed Ravana in his flying aerial chariot carrying off Sita, while the great vulture-king Jatayu with vast outstretched wings and talons attacks him mid-sky to save her; Sita in simple forest attire reaching out in distress. A forest and sky setting. Rich jewel-tone colors, gold-leaf gilded ornamentation and halos, ornate arched temple border, dramatic composition, classical South Indian temple art, no text, no lettering.
 
 ### 4. Kishkindha Kandam — `kishkindha-kandam-header.png`
-> Traditional Tanjore (Thanjavur) style devotional painting: Lord Rama and the vanara king Sugriva circling a sacred fire together to take vows of alliance and friendship, with Lakshmana and Hanuman witnessing reverently; rich jewel-tone colors, gold-leaf gilded ornamentation and halos, ornate arched temple border, serene rounded figures, flat decorative background, classical South Indian temple art, no text.
+> Traditional Tanjore (Thanjavur) style devotional painting, wide landscape 16:9: Lord Rama and the vanara king Sugriva circling a sacred fire together to take vows of alliance and friendship, with Lakshmana and Hanuman witnessing reverently. Rama and Lakshmana are forest ascetics — matted hair (jaṭāmukuṭa), bark-fiber garments (valkala), no crowns or royal jewelry; Rama holds his tall kodanda longbow (as tall as himself, upright, tip near the ground). Rama blue-skinned with a halo. Rich jewel-tone colors, gold-leaf gilded ornamentation and halos, ornate arched temple border, serene rounded figures, forest setting, classical South Indian temple art, no text, no lettering.
 
 ### 5. Sundara Kandam — `sundara-kandam-header.png`
 > Traditional Tanjore (Thanjavur) style devotional painting: Hanuman kneeling on one knee, head reverently bowed, extending one hand palm-up to offer Lord Rama's golden signet ring to Sita who sits beneath the Ashoka tree; rich jewel-tone colors, gold-leaf gilded ornamentation and halos, ornate arched temple border, serene rounded figures, flat decorative background, classical South Indian temple art, no text.
 
 ### 6. Yuddha Kandam — `yuddha-kandam-header.png`
-> Traditional Tanjore (Thanjavur) style devotional painting: Lord Rama upon his chariot drawing his great bow to release the Brahmastra against the ten-headed twenty-armed demon king Ravana on the battlefield of Lanka, the vanara army behind; rich jewel-tone colors, gold-leaf gilded ornamentation and halos, ornate arched temple border, dramatic heroic composition, flat decorative background, classical South Indian temple art, no text.
+> Traditional Tanjore (Thanjavur) style devotional painting, wide landscape 16:9: Lord Rama drawing his great kodanda longbow — a tall, majestic warrior's bow — to release the Brahmastra against the ten-headed twenty-armed demon king Ravana on the battlefield of Lanka, the vanara army behind him. Rama as a forest ascetic (matted hair / jaṭāmukuṭa, no crown), blue-skinned with a halo, heroic stance. Rich jewel-tone colors, gold-leaf gilded ornamentation and halos, ornate arched temple border, dramatic heroic composition, classical South Indian temple art, no text, no lettering.
 
 ### 7. Sundara scene (landing + verse) — `hanuman-crossing-ocean.png`
 > Traditional Tanjore style devotional painting of Hanuman leaping across the ocean, rich jewel-tone colors, gold-leaf gilded ornamentation and halo, ornate arched temple border, serene rounded figure, flat decorative background, classical South Indian temple art, no text.
