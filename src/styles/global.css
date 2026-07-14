@@ -223,3 +223,7 @@ body.lightbox-locked { overflow: hidden; }
 .sv-toc li { padding: .5rem .75rem; border: 1px solid #e5d8c5; border-radius: 8px; margin: .4rem 0; }
 .sv-toc .sv-range { color: var(--muted); font-size: .85rem; }
 .sv-part-done a { font-weight: 700; }
+
+/* ---- Kambar legends page ---- */
+.kambar-legend .img-slot { margin: 1rem 0; }
+.kambar-legend h2 { color: var(--accent); }
