@@ -1,9 +1,9 @@
 :root { --maxw: 44rem; --accent: #7a1f1f; --muted: #666; --bg: #fffaf3; --fg: #1a1a1a; }
 * { box-sizing: border-box; }
 body { margin: 0; font-family: Georgia, 'Noto Serif', serif; color: var(--fg); background: var(--bg); line-height: 1.6; }
-main { max-width: var(--maxw); margin: 0 auto; padding: 1.5rem; }
+main { max-width: var(--maxw); margin: 0; padding: 1.5rem; }
 a { color: var(--accent); }
-footer { max-width: var(--maxw); margin: 0 auto; padding: 1rem 1.5rem; }
+footer { max-width: var(--maxw); margin: 0; padding: 1rem 1.5rem; }
 
 /* ---- Site banner ---- */
 .site-banner {
@@ -30,8 +30,8 @@ footer { max-width: var(--maxw); margin: 0 auto; padding: 1rem 1.5rem; }
 
 /* nav sits below the banner */
 header nav {
-  max-width: var(--maxw); margin: 0 auto; padding: .6rem 1.5rem;
-  display: flex; gap: 1.25rem; flex-wrap: wrap;
+  max-width: var(--maxw); margin: 0; padding: .6rem 1.5rem;
+  display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center;
 }
 header nav a { margin-right: 0; }
 /* the fixed TOC toggle overlaps the top-left; keep nav clear only on the nav row */
