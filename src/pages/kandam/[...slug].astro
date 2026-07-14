@@ -1,0 +1,119 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DraftBanner from '../../components/DraftBanner.astro';
+import ImageSlot from '../../components/ImageSlot.astro';
+import { KAANDAMS } from '../../lib/structure';
+
+const stripExt = (id: string) => id.replace(/\.(md|mdx)$/, '');
+
+export async function getStaticPaths() {
+  // Defined inside: getStaticPaths runs in an isolated scope and cannot see
+  // other frontmatter variables.
+  const strip = (id: string) => id.replace(/\.(md|mdx)$/, '');
+  const kandams = await getCollection('kandams');
+  return kandams.map((k) => ({
+    params: { slug: strip(k.id) },
+    props: { kandam: k },
+  }));
+}
+
+const { kandam } = Astro.props;
+const d = kandam.data;
+const { Content } = await kandam.render();
+
+// Live counts computed from actual verse content for this kandam.
+const verses = await getCollection('verses');
+const mine = verses.filter((v) => v.data.kandam === d.key);
+const padalamSet = new Set(mine.map((v) => v.data.padalam));
+const livePadalams = padalamSet.size;
+const livePasurams = mine.length;
+
+// Tamil name from the canonical skeleton (fallback to record).
+const skel = KAANDAMS.find((k) => k.name === d.key);
+const tamil = d.tamil ?? skel?.tamil ?? '';
+
+// Resolve key pasurams to titles/links (only those that actually exist).
+const keyPasurams = await Promise.all(
+  (d.keyPasurams ?? []).map(async (kp) => {
+    const entry = await Promise.resolve(getEntry('verses', kp.verseId)).catch(() => undefined)
+      ?? await Promise.resolve(getEntry('verses', `${kp.verseId}.md`)).catch(() => undefined);
+    return entry
+      ? { id: stripExt(entry.id), label: `${entry.data.padalam} — Paasuram ${entry.data.verseNumber}`, note: kp.note, status: entry.data.status }
+      : null;
+  }),
+);
+const ref = d.reference;
+const pv = 'pending verification';
+---
+<BaseLayout title={`${d.name} — overview`}>
+  <DraftBanner status={d.status} />
+  {d.image && <ImageSlot id={d.image} label={`${d.name} — header`} ratio="21/9" variant="hero" />}
+
+  <h1>{d.name} <span class="k-tamil">{tamil}</span></h1>
+
+  {d.intro && <p class="k-intro">{d.intro}</p>}
+
+  <section class="layer">
+    <h2>At a glance</h2>
+    <table class="k-stats">
+      <tbody>
+        <tr>
+          <th>Kamban padalams</th>
+          <td>{ref?.kambanPadalams ?? <em>{pv}</em>} <span class="live">· {livePadalams} on this site</span></td>
+        </tr>
+        <tr>
+          <th>Kamban pasurams</th>
+          <td>{ref?.kambanPasurams ?? <em>{pv}</em>} <span class="live">· {livePasurams} on this site</span></td>
+        </tr>
+        <tr>
+          <th>Valmiki sargas</th>
+          <td>{ref?.valmikiSargas ?? <em>{pv}</em>}</td>
+        </tr>
+        <tr>
+          <th>Valmiki slokas</th>
+          <td>{ref?.valmikiSlokas ?? <em>{pv}</em>}</td>
+        </tr>
+      </tbody>
+    </table>
+    {ref?.source && <p class="k-src">Reference counts: {ref.source}</p>}
+    {!ref && <p class="k-src"><em>Canonical counts pending verification against a printed edition.</em></p>}
+  </section>
+
+  {keyPasurams.filter(Boolean).length > 0 && (
+    <section class="layer">
+      <h2>Key pasurams (Kamba Ramayanam)</h2>
+      <ul class="key-list">
+        {keyPasurams.filter(Boolean).map((kp: any) => (
+          <li>
+            <a href={`/verse/${kp.id}`}>{kp.label}</a>
+            {kp.status !== 'published' && <em> ({kp.status})</em>}
+            <div class="reason">{kp.note}</div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {(d.keySlokas ?? []).length > 0 && (
+    <section class="layer">
+      <h2>Key slokas (Valmiki Ramayana)</h2>
+      <ul class="key-list">
+        {(d.keySlokas ?? []).map((ks) => (
+          <li>
+            {ks.sourceId
+              ? <a href={`/source/${ks.sourceId}`}>{ks.citation}</a>
+              : ks.sourceUrl
+                ? <a href={ks.sourceUrl} rel="noopener" target="_blank">{ks.citation} ↗</a>
+                : <span>{ks.citation}</span>}
+            <div class="reason">{ks.note}</div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <div class="layer"><Content /></div>
+
+  <p><a href="/browse">Browse all verses →</a></p>
+</BaseLayout>

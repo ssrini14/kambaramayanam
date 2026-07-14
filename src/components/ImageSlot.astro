@@ -1,0 +1,42 @@
+---
+import { getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+
+/**
+ * Renders an image from the `images` collection by id. Until a real image
+ * record + file exists, renders a labelled placeholder box in the same
+ * footprint — so layout is designed now and real Tanjore art drops in later
+ * with zero markup changes. A record whose `file` is still the 1x1 stub is
+ * treated as "not ready yet" and shows the placeholder.
+ */
+interface Props {
+  /** id of a record in the `images` collection (may not exist yet). */
+  id: string;
+  /** Placeholder label shown until real art exists. */
+  label: string;
+  /** Aspect-ratio hint for the placeholder box, e.g. "16/9", "3/4", "1/1". */
+  ratio?: string;
+  /** Extra class for shape variants (e.g. "portrait", "hero"). */
+  variant?: string;
+}
+const { id, label, ratio = '4/3', variant = '' } = Astro.props;
+
+let resolved: { src: ImageMetadata; alt: string } | null = null;
+const img = await Promise.resolve(getEntry('images', id)).catch(() => undefined);
+if (img && img.data.status === 'published') {
+  const mod = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*', { eager: true });
+  const found = mod[`/src/assets/images/${img.data.file}`];
+  if (found) resolved = { src: found.default, alt: img.data.caption };
+}
+---
+{resolved ? (
+  <div class:list={['img-slot', variant]}>
+    <Image src={resolved.src} alt={resolved.alt} widths={[400, 800, 1200]} sizes="(max-width: 800px) 100vw, 800px" />
+  </div>
+) : (
+  <div class:list={['img-slot', 'img-placeholder', variant]} style={`aspect-ratio:${ratio}`} role="img" aria-label={`${label} — image coming soon`}>
+    <span class="img-placeholder-mark">✦</span>
+    <span class="img-placeholder-label">{label}</span>
+    <span class="img-placeholder-note">Tanjore art — coming soon</span>
+  </div>
+)}

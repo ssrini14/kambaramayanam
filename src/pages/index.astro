@@ -1,15 +1,69 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-// Landing acharya/hero images are added to src/content/images + src/assets/images as they
-// are generated (Pattabhishekam + 4 acharyas). Until then this renders the intro + entry point.
+import ImageSlot from '../components/ImageSlot.astro';
+
+// Key scenes of Sundara Kandam. `href` points into content where it exists;
+// scenes without verses yet are marked "coming soon". `image` is the id of a
+// record in the `images` collection (may not exist yet — ImageSlot falls back
+// to a placeholder). Real Tanjore art drops in with zero layout change.
+const scenes = [
+  { image: 'hanuman-crossing-ocean', title: 'Hanuman crosses the ocean', href: '/verse/sundara-1-001' },
+  { image: 'hanuman-meets-sita', title: 'Hanuman meets Sita', href: null },
+  { image: 'hanuman-in-ravanas-court', title: "In Ravana's court", href: null },
+  { image: 'hanuman-burns-lanka', title: 'The burning of Lanka', href: null },
+  { image: 'hanuman-embraces-rama', title: 'The return to Rama', href: null },
+];
+
+// The acharya parampara honoured on the landing page (painted portraits).
+const acharyas = [
+  { image: 'acharya-ramanuja', name: 'Sri Ramanuja' },
+  { image: 'acharya-desikan', name: 'Swami Desikan' },
+  { image: 'acharya-parakala', name: 'Brahmatantra Parakala Swamy' },
+  { image: 'acharya-uttamur', name: 'Sri Uttamur Veeraraghavachariar' },
+];
 ---
 <BaseLayout title="Home">
-  <h1>Kamba Ramayanam</h1>
-  <p>
-    A cross-referenced study of Kamban's Tamil Ramayanam — each verse connected to the
-    Valmiki Ramayana, Swami Desikan, the Divya Prabandham, the Bhagavad Gita, the
-    Upanishads, and more, read through the Vishishtadvaita tradition.
-  </p>
-  <p><a href="/browse">Begin with the opening of Sundara Kandam →</a></p>
-  <p><a href="/about">About this project & method →</a></p>
+  <section class="hero">
+    <ImageSlot id="rama-pattabhishekam" label="Sri Rama Pattabhishekam" ratio="21/9" variant="hero" />
+    <div class="hero-text">
+      <h1>Kamba Ramayanam</h1>
+      <p class="hero-lede">
+        A cross-referenced study of Kamban's Tamil Ramayanam — each verse connected to the
+        Valmiki Ramayana, Swami Desikan, the Divya Prabandham, the Bhagavad Gita, the
+        Upanishads, and more, read through the Vishishtadvaita tradition.
+      </p>
+      <p class="hero-actions">
+        <a class="btn" href="/browse">Begin with Sundara Kandam →</a>
+        <a class="btn btn-ghost" href="/about">About this project &amp; method</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="home-block">
+    <h2>Key scenes of Sundara Kandam</h2>
+    <div class="scene-grid">
+      {scenes.map((s) => (
+        <article class="scene-card">
+          {s.href
+            ? <a href={s.href} class="scene-link"><ImageSlot id={s.image} label={s.title} ratio="4/3" /></a>
+            : <ImageSlot id={s.image} label={s.title} ratio="4/3" />}
+          <h3>{s.title}</h3>
+          {!s.href && <span class="coming">Coming soon</span>}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="home-block">
+    <h2>The Acharya Parampara</h2>
+    <p class="block-lede">The teachers of the Vishishtadvaita tradition through whose vision these verses are read.</p>
+    <div class="acharya-grid">
+      {acharyas.map((a) => (
+        <article class="acharya-card">
+          <ImageSlot id={a.image} label={a.name} ratio="3/4" variant="portrait" />
+          <h3>{a.name}</h3>
+        </article>
+      ))}
+    </div>
+  </section>
 </BaseLayout>

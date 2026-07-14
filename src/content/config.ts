@@ -76,6 +76,54 @@ const works = defineCollection({
   }),
 });
 
+// Per-kandam overview/summary record. `slug` must match a kaandam name in
+// src/lib/structure.ts. Canonical reference counts (Valmiki sargas/slokas,
+// canonical padalam/pasuram totals) are OPTIONAL — populate only when verified
+// against a printed edition; the page shows "pending verification" otherwise.
+// Live counts (padalams/pasurams present so far) are computed from content, not
+// stored here. Key-verse links point into verse pages / source records.
+const kandams = defineCollection({
+  type: 'content',
+  schema: z.object({
+    key: z.string(), // must match a kaandam name in src/lib/structure.ts
+    name: z.string(),
+    tamil: z.string(),
+    order: z.number().int().positive(),
+    image: z.string().optional(), // id of a record in `images` (header art)
+    intro: z.string().optional(),
+    // Canonical reference figures — only when verified. `source` cites where from.
+    reference: z
+      .object({
+        kambanPadalams: z.number().int().nonnegative().optional(),
+        kambanPasurams: z.number().int().nonnegative().optional(),
+        valmikiSargas: z.number().int().nonnegative().optional(),
+        valmikiSlokas: z.number().int().nonnegative().optional(),
+        source: z.string().optional(),
+      })
+      .optional(),
+    // Highlighted Kamban pasurams (link to verse pages) and Valmiki slokas.
+    keyPasurams: z
+      .array(
+        z.object({
+          verseId: z.string(), // id of a record in `verses` (links to /verse/<id>)
+          note: z.string(),
+        }),
+      )
+      .optional(),
+    keySlokas: z
+      .array(
+        z.object({
+          citation: z.string(),
+          sourceId: z.string().optional(), // id in `valmiki` collection, if present
+          sourceUrl: z.string().url().optional(), // deep-link to valmikiramayan.net
+          note: z.string(),
+        }),
+      )
+      .optional(),
+    status,
+  }),
+});
+
 const images = defineCollection({
   type: 'data',
   schema: z.object({
@@ -102,4 +150,5 @@ export const collections = {
   commentaries: sourceCollection(),
   works,
   images,
+  kandams,
 };

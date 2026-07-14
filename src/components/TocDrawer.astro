@@ -1,0 +1,193 @@
+---
+import { getCollection } from 'astro:content';
+import { KAANDAMS } from '../lib/structure';
+
+/** Strip .md / .mdx extension from Astro 5 content entry IDs for clean URL params. */
+const stripExt = (id: string) => id.replace(/\.(md|mdx)$/, '');
+
+const verses = await getCollection('verses');
+
+// Group verses: kandam -> padalam -> sorted verse list.
+const byKandam = new Map<string, Map<string, typeof verses>>();
+for (const v of verses) {
+  const k = v.data.kandam;
+  const p = v.data.padalam;
+  if (!byKandam.has(k)) byKandam.set(k, new Map());
+  const pad = byKandam.get(k)!;
+  if (!pad.has(p)) pad.set(p, [] as any);
+  pad.get(p)!.push(v);
+}
+for (const pad of byKandam.values())
+  for (const list of pad.values())
+    list.sort((a, b) => a.data.verseNumber - b.data.verseNumber);
+
+// Build the full six-kaandam skeleton, merging in real content.
+// A padalam comes from the skeleton's seeded list OR from actual verses.
+type PadalamNode = { name: string; verses: { id: string; n: number; status: string }[] };
+type KaandamNode = { name: string; tamil: string; padalams: PadalamNode[]; hasContent: boolean };
+
+// Kandam summary-page slugs (only kaandams that have a summary record get a link).
+const kandamRecords = await getCollection('kandams');
+const slugByName = new Map(kandamRecords.map((k) => [k.data.key, stripExt(k.id)]));
+
+const tree: (KaandamNode & { slug: string | null })[] = KAANDAMS.map((k) => {
+  const pads = byKandam.get(k.name) ?? new Map();
+  const seeded = k.padalams ?? [];
+  // Union of seeded padalam names (in order) + any padalams found only in content.
+  const names = [...seeded];
+  for (const p of pads.keys()) if (!names.includes(p)) names.push(p);
+  const padalams: PadalamNode[] = names.map((name) => ({
+    name,
+    verses: (pads.get(name) ?? []).map((v: any) => ({
+      id: stripExt(v.id),
+      n: v.data.verseNumber,
+      status: v.data.status,
+    })),
+  }));
+  return { name: k.name, tamil: k.tamil, padalams, hasContent: pads.size > 0, slug: slugByName.get(k.name) ?? null };
+});
+
+// Current verse id (if we're on a verse page) for auto-highlight/expand.
+const path = Astro.url.pathname;
+const verseMatch = path.match(/^\/verse\/(.+?)\/?$/);
+const currentVerseId = verseMatch ? decodeURIComponent(verseMatch[1]) : null;
+---
+
+<button id="toc-toggle" aria-label="Open contents" aria-expanded="false" aria-controls="toc-drawer">☰ Contents</button>
+
+<div id="toc-overlay" hidden></div>
+
+<nav id="toc-drawer" aria-label="Table of contents" aria-hidden="true" data-current={currentVerseId}>
+  <div class="toc-head">
+    <span>Contents</span>
+    <button id="toc-close" aria-label="Close contents">×</button>
+  </div>
+  <ul class="toc-tree">
+    {tree.map((k) => (
+      <li class="toc-kaandam" data-name={k.name}>
+        <div class="toc-k-row">
+          <button class="toc-k-toggle" aria-expanded="false" aria-label={`Expand ${k.name}`}>
+            <span class="tw">▸</span>
+          </button>
+          {k.slug
+            ? <a class="toc-k-link" href={`/kandam/${k.slug}`}>
+                <span class="toc-k-label">{k.name}</span>
+                <span class="toc-k-tamil">{k.tamil}</span>
+              </a>
+            : <span class="toc-k-link toc-k-nolink">
+                <span class="toc-k-label">{k.name}</span>
+                <span class="toc-k-tamil">{k.tamil}</span>
+              </span>}
+        </div>
+        <ul class="toc-padalams" hidden>
+          {k.padalams.length === 0 && (
+            <li class="toc-empty">Content to be added</li>
+          )}
+          {k.padalams.map((p) => (
+            <li class="toc-padalam">
+              <button class="toc-p-btn" aria-expanded="false">
+                <span class="tw">▸</span>{p.name}
+              </button>
+              <ul class="toc-verses" hidden>
+                {p.verses.length === 0 && (
+                  <li class="toc-empty">Content to be added</li>
+                )}
+                {p.verses.map((v) => (
+                  <li>
+                    <a
+                      href={`/verse/${v.id}`}
+                      class="toc-verse"
+                      data-id={v.id}
+                    >
+                      Paasuram {v.n}{v.status !== 'published' && <em> ({v.status})</em>}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script is:inline>
+  (function () {
+    const toggle = document.getElementById('toc-toggle');
+    const drawer = document.getElementById('toc-drawer');
+    const overlay = document.getElementById('toc-overlay');
+    const closeBtn = document.getElementById('toc-close');
+    if (!toggle || !drawer || !overlay || !closeBtn) return;
+
+    function openDrawer() {
+      drawer.classList.add('open');
+      overlay.hidden = false;
+      drawer.setAttribute('aria-hidden', 'false');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('toc-locked');
+    }
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      overlay.hidden = true;
+      drawer.setAttribute('aria-hidden', 'true');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('toc-locked');
+    }
+
+    toggle.addEventListener('click', openDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+    });
+
+    // Accordion: opening one node closes its siblings at the same level.
+    // `panelSelector` is the element to show/hide; it lives as a later sibling
+    // of the button's containing <li>. `getPanel(li)` finds it within an <li>.
+    function wireAccordion(btnSelector, getPanel) {
+      drawer.querySelectorAll(btnSelector).forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const li = btn.closest('li');
+          const panel = li && getPanel(li);
+          const isOpen = btn.getAttribute('aria-expanded') === 'true';
+          // Close siblings under the same parent <ul>.
+          const parentList = btn.closest('ul');
+          if (parentList) {
+            parentList.querySelectorAll(':scope > li').forEach((sibLi) => {
+              const sibBtn = sibLi.querySelector(':scope > ' + btnSelector) ||
+                             sibLi.querySelector(':scope > .toc-k-row > ' + btnSelector);
+              const sp = getPanel(sibLi);
+              if (sibBtn) sibBtn.setAttribute('aria-expanded', 'false');
+              if (sp) sp.hidden = true;
+            });
+          }
+          if (!isOpen) {
+            btn.setAttribute('aria-expanded', 'true');
+            if (panel) panel.hidden = false;
+          }
+        });
+      });
+    }
+    wireAccordion('.toc-k-toggle', (li) => li.querySelector(':scope > .toc-padalams'));
+    wireAccordion('.toc-p-btn', (li) => li.querySelector(':scope > .toc-verses'));
+
+    // Auto-expand to the current verse and highlight it.
+    const currentId = drawer.getAttribute('data-current');
+    if (currentId) {
+      const active = drawer.querySelector('.toc-verse[data-id="' + CSS.escape(currentId) + '"]');
+      if (active) {
+        active.classList.add('active');
+        active.setAttribute('aria-current', 'true');
+        // Open ancestor padalam + kaandam.
+        const pPanel = active.closest('.toc-verses');
+        const pBtn = pPanel && pPanel.previousElementSibling; // .toc-p-btn
+        if (pBtn) { pBtn.setAttribute('aria-expanded', 'true'); pPanel.hidden = false; }
+        const kPanel = active.closest('.toc-padalams');
+        const kLi = kPanel && kPanel.closest('.toc-kaandam');
+        const kBtn = kLi && kLi.querySelector('.toc-k-toggle');
+        if (kBtn && kPanel) { kBtn.setAttribute('aria-expanded', 'true'); kPanel.hidden = false; }
+      }
+    }
+  })();
+</script>
