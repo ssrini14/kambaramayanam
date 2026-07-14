@@ -1,9 +1,9 @@
 {
   "caption": "Hanuman leaps across the ocean to Lanka",
   "scene": "Hanuman crossing the ocean",
-  "tool": "PLACEHOLDER — record the actual generator (e.g. DALL·E 3) when the real image is added",
+  "tool": "ChatGPT (DALL·E 3)",
   "prompt": "Traditional Tanjore style devotional painting of Hanuman leaping across the ocean, rich jewel-tone colors, gold-leaf gilded ornamentation and halo, ornate arched temple border, serene rounded figure, flat decorative background, classical South Indian temple art, no text.",
-  "license": "PLACEHOLDER — record tool license permitting public display",
-  "status": "draft",
+  "license": "Generated with ChatGPT (DALL·E 3); used per OpenAI content/usage terms.",
+  "status": "published",
   "file": "hanuman-crossing-ocean.png"
 }
