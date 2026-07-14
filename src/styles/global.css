@@ -1,9 +1,9 @@
 :root { --maxw: 44rem; --accent: #7a1f1f; --muted: #666; --bg: #fffaf3; --fg: #1a1a1a; }
 * { box-sizing: border-box; }
 body { margin: 0; font-family: Georgia, 'Noto Serif', serif; color: var(--fg); background: var(--bg); line-height: 1.6; }
-main { max-width: var(--maxw); margin: 0; padding: 1.5rem; }
+main { max-width: var(--maxw); margin: 0 auto; padding: 1.5rem; }
 a { color: var(--accent); }
-footer { max-width: var(--maxw); margin: 0; padding: 1rem 1.5rem; }
+footer { max-width: var(--maxw); margin: 0 auto; padding: 1rem 1.5rem; }
 
 /* ---- Site banner ---- */
 .site-banner {
@@ -30,7 +30,7 @@ footer { max-width: var(--maxw); margin: 0; padding: 1rem 1.5rem; }
 
 /* nav sits below the banner */
 header nav {
-  max-width: var(--maxw); margin: 0; padding: .6rem 1.5rem;
+  max-width: var(--maxw); margin: 0 auto; padding: .6rem 1.5rem;
   display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center;
 }
 header nav a { margin-right: 0; }
@@ -51,6 +51,7 @@ figcaption { color: var(--muted); font-size: .9rem; text-align: center; }
 .nav-toc-btn {
   background: var(--accent); color: #fff; border: 0; border-radius: 6px;
   padding: .3rem .7rem; font: inherit; font-size: .9rem; cursor: pointer;
+  margin-right: auto; /* pin Contents to the far left; push nav links right */
 }
 .nav-toc-btn:hover { background: #611818; }
 body.toc-locked { overflow: hidden; }
