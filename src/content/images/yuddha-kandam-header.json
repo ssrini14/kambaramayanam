@@ -5,5 +5,6 @@
   "prompt": "Traditional Tanjore (Thanjavur) style devotional painting, wide landscape 16:9: Lord Rama drawing his great kodanda longbow — a tall, majestic warrior's bow — to release the Brahmastra against the ten-headed twenty-armed demon king Ravana on the battlefield of Lanka, the vanara army behind him. Rama as a forest ascetic (matted hair, no crown), blue-skinned with a halo, heroic stance. Rich jewel-tone colors, gold-leaf gilded ornamentation and halos, ornate arched temple border, dramatic heroic composition, classical South Indian temple art, no text, no lettering.",
   "license": "PLACEHOLDER — record tool license permitting public display",
   "status": "draft",
-  "file": "yuddha-kandam-header.png"
+  "file": "yuddha-kandam-header.png",
+  "touchupNote": "Ravana's ten heads / twenty arms may be miscounted by the image AI — flag for manual correction by a human artist before final publishing."
 }

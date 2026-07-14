@@ -134,6 +134,7 @@ const images = defineCollection({
     license: z.string(),
     status,
     file: z.string(),
+    touchupNote: z.string().optional(), // manual-correction reminder (e.g. Ravana head/arm count)
   }),
 });
 
