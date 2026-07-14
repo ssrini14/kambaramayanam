@@ -42,8 +42,9 @@ footer { max-width: var(--maxw); margin: 0 auto; padding: 1rem 1.5rem; }
 
 /* nav sits below the banner */
 header nav {
-  max-width: var(--maxw); margin: 0 auto; padding: .6rem 1.5rem;
+  margin: 0; padding: .6rem 1.5rem;
   display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center;
+  border-bottom: 1px solid #e5d8c5;
 }
 header nav a { margin-right: 0; }
 /* the fixed TOC toggle overlaps the top-left; keep nav clear only on the nav row */

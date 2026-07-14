@@ -114,9 +114,23 @@ const currentVerseId = verseMatch ? decodeURIComponent(verseMatch[1]) : null;
     if (!drawer) return;
 
     // "Contents" button: on desktop it collapses the sidebar (full-width reading);
-    // on mobile it shows/hides the collapsed sidebar.
+    // on mobile it shows/hides the collapsed sidebar. The desktop collapse state
+    // is remembered across pages via localStorage.
     const toggle = document.getElementById('toc-toggle');
     const layout = document.querySelector('.layout');
+    function syncLabel() {
+      if (!toggle || !layout) return;
+      const collapsed = layout.classList.contains('collapsed');
+      toggle.textContent = collapsed ? '☰ Show Contents' : '☰ Hide Contents';
+      toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    }
+    // Restore remembered desktop collapse state.
+    if (layout) {
+      try {
+        if (localStorage.getItem('toc-collapsed') === '1') layout.classList.add('collapsed');
+      } catch (e) {}
+      syncLabel();
+    }
     if (toggle && layout) {
       toggle.addEventListener('click', () => {
         const mobile = window.matchMedia('(max-width: 760px)').matches;
@@ -124,6 +138,8 @@ const currentVerseId = verseMatch ? decodeURIComponent(verseMatch[1]) : null;
           drawer.classList.toggle('open');
         } else {
           layout.classList.toggle('collapsed');
+          try { localStorage.setItem('toc-collapsed', layout.classList.contains('collapsed') ? '1' : '0'); } catch (e) {}
+          syncLabel();
         }
       });
     }
