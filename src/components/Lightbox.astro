@@ -13,6 +13,7 @@
       <span id="lightbox-caption"></span>
       <a id="lightbox-download" class="lightbox-download" href="" download>⤓ Download</a>
     </figcaption>
+    <p id="lightbox-credit" class="lightbox-credit"></p>
   </figure>
 </div>
 
@@ -23,13 +24,15 @@
     const cap = document.getElementById('lightbox-caption');
     const dl = document.getElementById('lightbox-download');
     const closeBtn = document.getElementById('lightbox-close');
+    const creditEl = document.getElementById('lightbox-credit');
     if (!box || !img || !cap || !dl || !closeBtn) return;
 
-    function open(full, caption) {
+    function open(full, caption, credit) {
       img.src = full;
       img.alt = caption || '';
       cap.textContent = caption || '';
       dl.href = full;
+      if (creditEl) creditEl.textContent = credit ? ('Image: ' + credit) : '';
       box.hidden = false;
       box.setAttribute('aria-hidden', 'false');
       document.body.classList.add('lightbox-locked');
@@ -46,7 +49,7 @@
       const target = e.target.closest && e.target.closest('.img-zoomable');
       if (target) {
         e.preventDefault();
-        open(target.getAttribute('data-full'), target.getAttribute('data-caption'));
+        open(target.getAttribute('data-full'), target.getAttribute('data-caption'), target.getAttribute('data-credit'));
       }
     });
     closeBtn.addEventListener('click', close);

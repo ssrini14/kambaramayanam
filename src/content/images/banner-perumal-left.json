@@ -1,9 +1,15 @@
 {
   "caption": "Sri Vaduvur Kothandaramar",
-  "scene": "Banner medallion (left) — Sri Kothandaramar of Vaduvur, Rama standing with his bow (kodanda), the hero of the Ramayanam.",
-  "tool": "PLACEHOLDER — provide/generate the banner Perumal image",
-  "prompt": "Devotional image of Sri Kothandaramar (Rama standing with his bow / kodanda) of Vaduvur, blue-hued, crowned, serene, temple-mūrti / archa style, gold and jewel tones, no text. Square crop for a small round banner medallion.",
-  "license": "PLACEHOLDER — record tool/source + license",
+  "scene": "Banner medallion (left) — Sri Kothandaramar of Vaduvur, Rama standing with his bow.",
+  "tool": "Photograph (Creative Commons)",
+  "prompt": "n/a — real photograph",
+  "license": "Creative Commons — see attribution",
+  "attribution": {
+    "author": "PENDING — photographer name from the Wikimedia file page",
+    "sourceUrl": "https://commons.wikimedia.org/",
+    "licenseName": "PENDING — e.g. CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/"
+  },
   "status": "draft",
   "file": "banner/perumal-left.png"
 }

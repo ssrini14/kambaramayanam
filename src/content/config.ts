@@ -132,6 +132,16 @@ const images = defineCollection({
     tool: z.string(),
     prompt: z.string(),
     license: z.string(),
+    // For licensed third-party photos (e.g. Creative Commons): TASL attribution.
+    // Required to display a proper credit line. Leave unset for our own AI art.
+    attribution: z
+      .object({
+        author: z.string(),          // photographer / creator
+        sourceUrl: z.string().url(), // page the image came from (e.g. Wikimedia file page)
+        licenseName: z.string(),     // e.g. "CC BY-SA 4.0"
+        licenseUrl: z.string().url().optional(),
+      })
+      .optional(),
     status,
     file: z.string(),
     touchupNote: z.string().optional(), // manual-correction reminder (e.g. Ravana head/arm count)

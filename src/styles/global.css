@@ -237,6 +237,8 @@ body.lightbox-locked { overflow: hidden; }
   position: fixed; top: 1rem; right: 1.25rem; z-index: 101;
   background: none; border: 0; color: #fff; font-size: 2.5rem; line-height: 1; cursor: pointer;
 }
+.lightbox-credit { color: #d9c3a0; font-size: .78rem; margin: .35rem 0 0; text-align: center; max-width: 90vw; word-break: break-word; }
+.lightbox-credit:empty { display: none; }
 
 /* ---- Eka-Sloki page ---- */
 .es-eyebrow { color: var(--muted); font-style: italic; margin-bottom: 0; }
