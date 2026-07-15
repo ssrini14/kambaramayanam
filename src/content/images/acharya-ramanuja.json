@@ -1,9 +1,9 @@
 {
   "caption": "Sri Ramanuja",
   "scene": "Dignified devotional portrait of Sri Ramanuja, the great Vishishtadvaita acharya: saffron sannyasi robes, tridandi (triple staff), urdhva pundra (Sri Vaishnava tilaka), serene compassionate expression, right hand in teaching gesture.",
-  "tool": "PLACEHOLDER — record the actual generator when the real image is added",
+  "tool": "ChatGPT (DALL·E 3)",
   "prompt": "Traditional devotional portrait painting of Sri Ramanuja, the Vishishtadvaita acharya: saffron sannyasi robes, holding the tridandi (triple staff), prominent urdhva pundra Sri Vaishnava tilaka on forehead, seated serene and compassionate, soft warm painterly style, respectful realistic likeness, subtle halo, plain reverent background, no text. An original painted portrait honoring traditional depictions — not a copy of any specific artwork or photograph.",
-  "license": "PLACEHOLDER — record tool license permitting public display",
-  "status": "draft",
-  "file": "acharya-ramanuja.png"
+  "license": "Generated with ChatGPT (DALL·E 3); used per OpenAI content/usage terms.",
+  "status": "published",
+  "file": "Acharyan/acharya-ramanuja.png"
 }
